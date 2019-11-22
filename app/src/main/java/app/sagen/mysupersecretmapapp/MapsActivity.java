@@ -22,15 +22,20 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
 import java.util.Objects;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+import app.sagen.mysupersecretmapapp.data.Room;
+import app.sagen.mysupersecretmapapp.task.FetchRoomsTask;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, FetchRoomsTask.FetchRoomTaskCallback {
 
     private static final String TAG = "MapsActivity";
 
     private GoogleMap googleMap;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
+    private Location lastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)
                 .setFastestInterval(1000);
+
+        FetchRoomsTask fetchRoomsTask = new FetchRoomsTask("http://student.cs.hioa.no/~s326194/showRooms.php", this);
+        fetchRoomsTask.execute();
     }
 
     @Override
@@ -68,19 +76,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void handleNewLocation (Location location){
+        this.lastLocation = location;
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions options = new MarkerOptions().position(latLng).title("Jeg er her!");
-        googleMap.addMarker(options);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         this.googleMap = googleMap;
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(59.9139, 10.7522)));
-
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(59.9139, 10.7522), 21.0f));
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setIndoorLevelPickerEnabled(true);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        googleMap.getUiSettings().setMapToolbarEnabled(true);
+        googleMap.setIndoorEnabled(true);
+        googleMap.setMyLocationEnabled(true);
     }
 
     @Override
@@ -130,5 +140,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    public void fetchedRoomList(List<Room> rooms) {
+        googleMap.clear();
+        if(lastLocation != null) {
+            handleNewLocation(lastLocation);
+        }
+
+        for(Room room : rooms) {
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(room.getLatLng())
+                    .title(room.getName())
+                    .snippet(room.getDescription());
+
+            googleMap.addMarker(markerOptions);
+        }
     }
 }
