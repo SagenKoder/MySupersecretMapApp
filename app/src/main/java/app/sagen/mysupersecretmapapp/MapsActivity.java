@@ -79,9 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         this.googleMap = googleMap;
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(59.946159, 	10.735050)).title("Hjem <3"));
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(59.954660, 	10.765170)).title("Gaute :'("));
-
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(59.9139, 10.7522)));
 
     }
