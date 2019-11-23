@@ -1,5 +1,6 @@
 package app.sagen.mysupersecretmapapp;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -10,6 +11,10 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.Scene;
+import android.transition.TransitionManager;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -100,48 +105,91 @@ public class MapsActivity extends FragmentActivity implements
                 toggleFabMenu();
             }
         });
+
+        fabBackground.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                toggleFabMenu();
+            }
+        });
+
+        fab.addOnExtendAnimationListener(new Animator.AnimatorListener() {
+            @Override public void onAnimationStart(Animator animation) { }
+            @Override public void onAnimationEnd(Animator animation) {
+
+                AutoTransition autoTransition = new AutoTransition();
+                TransitionManager.go(new Scene((CoordinatorLayout) fab.getParent()), autoTransition);
+                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+                layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+                fab.setLayoutParams(layoutParams);
+
+            }
+            @Override public void onAnimationCancel(Animator animation) { }
+            @Override public void onAnimationRepeat(Animator animation) { }
+        });
     }
 
     private void toggleFabMenu() {
-        if(!fabExtended) { // show
-
-            fabLayout1.setVisibility(View.VISIBLE);
-            fabLayout2.setVisibility(View.VISIBLE);
-
-            fabBackground.setVisibility(View.VISIBLE);
-
-            // fab.animate().rotationBy(180);
-
-            fabLayout1.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
-            fabLayout2.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
-
-            fab.shrink();
-            fab.setGravity(Gravity.END | Gravity.BOTTOM);
-
-        } else { // hide
-
-            fabBackground.setVisibility(View.GONE);
-
-            // fab.animate().rotationBy(0);
-
-            fab.extend();
-            fab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
-
-            fabLayout1.animate().translationY(0);
-            fabLayout2.animate().translationY(0).setListener(new Animator.AnimatorListener(){
-                @Override public void onAnimationStart(Animator animation) {}
-                @Override public void onAnimationEnd(Animator animation) {
-                    if(!fabExtended) {
-                        fabLayout1.setVisibility(View.GONE);
-                        fabLayout2.setVisibility(View.GONE);
-                    }
-                }
-                @Override public void onAnimationCancel(Animator animation) {}
-                @Override public void onAnimationRepeat(Animator animation) {}
-            });
-
+        if(!fabExtended) {
+            showMenu();
+            fabExtended = true;
+        } else {
+            closeMenu();
+            fabExtended = false;
         }
-        fabExtended = !fabExtended;
+    }
+
+    private void showMenu() {
+        fabLayout1.setVisibility(View.VISIBLE);
+        fabLayout2.setVisibility(View.VISIBLE);
+
+        fabBackground.setVisibility(View.VISIBLE);
+
+        fabLayout1.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+        fabLayout2.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+
+        AutoTransition autoTransition = new AutoTransition();
+        autoTransition.addListener(new Transition.TransitionListener() {
+            @Override public void onTransitionStart(Transition transition) { }
+            @Override public void onTransitionEnd(Transition transition) {
+
+                //fab.shrink();
+
+            }
+            @Override public void onTransitionCancel(Transition transition) { }
+            @Override public void onTransitionPause(Transition transition) { }
+            @Override public void onTransitionResume(Transition transition) { }
+        });
+
+        TransitionManager.go(new Scene((CoordinatorLayout) fab.getParent()), autoTransition);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        layoutParams.gravity = Gravity.END | Gravity.BOTTOM;
+        fab.setLayoutParams(layoutParams);
+    }
+
+    private void closeMenu() {
+        fabBackground.setVisibility(View.GONE);
+
+        fabLayout1.animate().translationY(0);
+        fabLayout2.animate().translationY(0).setListener(new Animator.AnimatorListener(){
+            @Override public void onAnimationStart(Animator animation) {}
+            @Override public void onAnimationEnd(Animator animation) {
+                if(!fabExtended) {
+                    fabLayout1.setVisibility(View.GONE);
+                    fabLayout2.setVisibility(View.GONE);
+                }
+            }
+            @Override public void onAnimationCancel(Animator animation) {}
+            @Override public void onAnimationRepeat(Animator animation) {}
+        });
+
+        fab.extend();
+
+        AutoTransition autoTransition = new AutoTransition();
+        TransitionManager.go(new Scene((CoordinatorLayout) fab.getParent()), autoTransition);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+        fab.setLayoutParams(layoutParams);
     }
 
     @Override
