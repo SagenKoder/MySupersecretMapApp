@@ -102,44 +102,22 @@ public class MapsActivity extends FragmentActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabMenu();
+                if(!fabExtended) showMenu();
+                else closeMenu();
             }
         });
 
         fabBackground.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                toggleFabMenu();
+                closeMenu();
             }
         });
-
-        fab.addOnExtendAnimationListener(new Animator.AnimatorListener() {
-            @Override public void onAnimationStart(Animator animation) { }
-            @Override public void onAnimationEnd(Animator animation) {
-
-                AutoTransition autoTransition = new AutoTransition();
-                TransitionManager.go(new Scene((CoordinatorLayout) fab.getParent()), autoTransition);
-                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-                layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-                fab.setLayoutParams(layoutParams);
-
-            }
-            @Override public void onAnimationCancel(Animator animation) { }
-            @Override public void onAnimationRepeat(Animator animation) { }
-        });
-    }
-
-    private void toggleFabMenu() {
-        if(!fabExtended) {
-            showMenu();
-            fabExtended = true;
-        } else {
-            closeMenu();
-            fabExtended = false;
-        }
     }
 
     private void showMenu() {
+        fabExtended = true;
+
         fabLayout1.setVisibility(View.VISIBLE);
         fabLayout2.setVisibility(View.VISIBLE);
 
@@ -149,18 +127,6 @@ public class MapsActivity extends FragmentActivity implements
         fabLayout2.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
 
         AutoTransition autoTransition = new AutoTransition();
-        autoTransition.addListener(new Transition.TransitionListener() {
-            @Override public void onTransitionStart(Transition transition) { }
-            @Override public void onTransitionEnd(Transition transition) {
-
-                //fab.shrink();
-
-            }
-            @Override public void onTransitionCancel(Transition transition) { }
-            @Override public void onTransitionPause(Transition transition) { }
-            @Override public void onTransitionResume(Transition transition) { }
-        });
-
         TransitionManager.go(new Scene((CoordinatorLayout) fab.getParent()), autoTransition);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
         layoutParams.gravity = Gravity.END | Gravity.BOTTOM;
@@ -168,6 +134,8 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     private void closeMenu() {
+        fabExtended = false;
+
         fabBackground.setVisibility(View.GONE);
 
         fabLayout1.animate().translationY(0);
