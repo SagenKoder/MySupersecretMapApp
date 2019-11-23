@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">MySupersecretMapApp</string>
     <string name="title_activity_maps">Map</string>
-    <string name="opprett_nytt_rom">Opprett nytt rom</string>
+    <string name="opprett_nytt_rom">Nytt bygg</string>
 </resources>

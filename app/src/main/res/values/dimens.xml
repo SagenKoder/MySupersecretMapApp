@@ -7,8 +7,8 @@
 
     <dimen name="standard_12">12dp</dimen>
     <dimen name="standard_23">23dp</dimen>
-    <dimen name="standard_60">55dp</dimen>
-    <dimen name="standard_120">110dp</dimen>
-    <dimen name="standard_145">145dp</dimen>
+    <dimen name="standard_60">50dp</dimen>
+    <dimen name="standard_120">105dp</dimen>
+    <dimen name="standard_145">160dp</dimen>
 
 </resources>

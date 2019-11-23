@@ -37,7 +37,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fra kart"/>
+            android:text="Fra kart"
+            android:textColor="@color/colorPrimary"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab1"
@@ -69,7 +70,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fra GPS"/>
+            android:text="Fra GPS"
+            android:textColor="@color/colorPrimary"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab2"
@@ -77,6 +79,39 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             app:srcCompat="@drawable/ic_gps_fixed_white_24dp"
+            app:rippleColor="#fff"
+            android:focusable="true"
+            app:elevation="8dp"
+            android:clickable="true"
+            app:fabSize="mini"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fabLayout3"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:padding="@dimen/standard_12"
+        android:clipToPadding="false"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/standard_23"
+        android:layout_gravity="bottom|end"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fra addresse"
+            android:textColor="@color/colorPrimary"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:srcCompat="@drawable/ic_domain_white_24dp"
             app:rippleColor="#fff"
             android:focusable="true"
             app:elevation="8dp"

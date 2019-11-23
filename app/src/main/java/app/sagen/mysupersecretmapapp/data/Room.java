@@ -1,40 +1,40 @@
 package app.sagen.mysupersecretmapapp.data;
 
-import com.google.android.gms.maps.model.LatLng;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Room {
 
     private int id;
     private String name;
     private String description;
-    private float geolat;
-    private float geolng;
+    private Building building;
 
-    public Room() {
+    private List<Reservation> reservations;
+
+    public Room(Building building) {
+        this.building = building;
         id = -1;
     }
 
-    public Room(JSONObject jsonObject) throws JSONException {
+    public Room(Building building, JSONObject jsonObject) throws JSONException {
+
+        this.building = building;
+
         id = jsonObject.getInt("id");
         name = jsonObject.getString("name");
         description = jsonObject.getString("description");
-        geolat = (float) jsonObject.getDouble("geolat");
-        geolng = (float) jsonObject.getDouble("geolng");
-    }
 
-    public Room(String name, String description, float geolat, float geolng) {
-        this(-1, name, description, geolat, geolng);
-    }
+        reservations = new ArrayList<>();
 
-    public Room(int id, String name, String description, float geolat, float geolng) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.geolat = geolat;
-        this.geolng = geolng;
+        JSONArray reservations = jsonObject.getJSONArray("reservations");
+        for(int i = 0; i < reservations.length(); i++) {
+            this.reservations.add(new Reservation(this, reservations.getJSONObject(i)));
+        }
     }
 
     public int getId() {
@@ -57,28 +57,29 @@ public class Room {
         this.description = description;
     }
 
-    public float getGeolat() {
-        return geolat;
+    public Building getBuilding() {
+        return building;
     }
 
-    public void setGeolat(float geolat) {
-        this.geolat = geolat;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
-    public float getGeolng() {
-        return geolng;
+    public List<Reservation> getReservations() {
+        return reservations;
     }
 
-    public void setGeolng(float geolng) {
-        this.geolng = geolng;
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
-    public void setLatLng(LatLng latLng) {
-        this.geolat = (float)latLng.latitude;
-        this.geolng = (float)latLng.longitude;
-    }
-
-    public LatLng getLatLng() {
-        return new LatLng(geolat, geolng);
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", reservations=" + reservations +
+                '}';
     }
 }

@@ -14,32 +14,32 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.sagen.mysupersecretmapapp.data.Room;
+import app.sagen.mysupersecretmapapp.data.Building;
 
-public class FetchRoomsTask extends AsyncTask<Void, Void, List<Room>> {
+public class FetchDataTask extends AsyncTask<Void, Void, List<Building>> {
 
     public interface FetchRoomTaskCallback {
-        void fetchedRoomList(List<Room> room);
+        void fetchedDataList(List<Building> building);
     }
 
-    private static final String TAG = "FetchRoomsTask";
+    private static final String TAG = "FetchDataTask";
 
     private URL apiUri;
     private FetchRoomTaskCallback fetchRoomTaskCallback;
 
-    public FetchRoomsTask(String apiUri, FetchRoomTaskCallback fetchRoomTaskCallback) {
+    public FetchDataTask(String apiUri, FetchRoomTaskCallback fetchRoomTaskCallback) {
         try {
             this.apiUri = new URL(apiUri);
             this.fetchRoomTaskCallback = fetchRoomTaskCallback;
         } catch (MalformedURLException e) {
-            Log.e(TAG, "FetchRoomsTask: Could not parse api url!", e);
+            Log.e(TAG, "FetchDataTask: Could not parse api url!", e);
         }
     }
 
     @Override
-    protected List<Room> doInBackground(Void... voids) {
+    protected List<Building> doInBackground(Void... voids) {
 
-        List<Room> rooms = new ArrayList<>();
+        List<Building> buildings = new ArrayList<>();
 
         try {
 
@@ -49,7 +49,7 @@ public class FetchRoomsTask extends AsyncTask<Void, Void, List<Room>> {
 
             int responseCode = conn.getResponseCode();
             if(responseCode != 200) {
-                throw new RuntimeException("Failed to fetch rooms from api! Got HTTP status " + responseCode + " from server!");
+                throw new RuntimeException("Failed to fetch buildings from api! Got HTTP status " + responseCode + " from server!");
             }
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -66,18 +66,18 @@ public class FetchRoomsTask extends AsyncTask<Void, Void, List<Room>> {
 
             for(int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                rooms.add(new Room(jsonObject));
+                buildings.add(new Building(jsonObject));
             }
 
         } catch(Exception e) {
-            Log.e(TAG, "doInBackground: Error while loading rooms!", e);
+            Log.e(TAG, "doInBackground: Error while loading buildings!", e);
         }
 
-        return rooms;
+        return buildings;
     }
 
     @Override
-    protected void onPostExecute(List<Room> rooms) {
-        fetchRoomTaskCallback.fetchedRoomList(rooms);
+    protected void onPostExecute(List<Building> buildings) {
+        fetchRoomTaskCallback.fetchedDataList(buildings);
     }
 }

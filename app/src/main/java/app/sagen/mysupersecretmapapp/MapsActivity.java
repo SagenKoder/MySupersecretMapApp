@@ -1,6 +1,5 @@
 package app.sagen.mysupersecretmapapp;
 
-import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.transition.Scene;
 import android.transition.TransitionManager;
-import android.transition.Transition;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -40,15 +38,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import app.sagen.mysupersecretmapapp.data.Room;
-import app.sagen.mysupersecretmapapp.task.FetchRoomsTask;
+import app.sagen.mysupersecretmapapp.data.Building;
+import app.sagen.mysupersecretmapapp.task.FetchDataTask;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
-        FetchRoomsTask.FetchRoomTaskCallback,
+        FetchDataTask.FetchRoomTaskCallback,
         GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMarkerDragListener {
 
@@ -62,13 +60,15 @@ public class MapsActivity extends FragmentActivity implements
     ExtendedFloatingActionButton fab;
     FloatingActionButton fab1;
     FloatingActionButton fab2;
+    FloatingActionButton fab3;
     LinearLayout fabLayout1;
     LinearLayout fabLayout2;
+    LinearLayout fabLayout3;
     View fabBackground;
 
     private boolean fabExtended = false;
 
-    private Map<Room, Marker> markers = new HashMap<>();
+    private Map<Building, Marker> markers = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,14 +89,16 @@ public class MapsActivity extends FragmentActivity implements
                 .setInterval(10 * 1000)
                 .setFastestInterval(1000);
 
-        FetchRoomsTask fetchRoomsTask = new FetchRoomsTask("http://student.cs.hioa.no/~s326194/showRooms.php", this);
-        fetchRoomsTask.execute();
+        FetchDataTask fetchDataTask = new FetchDataTask("http://student.cs.hioa.no/~s326194/showBuildings.php", this);
+        fetchDataTask.execute();
 
         fab = findViewById(R.id.fab);
         fab1 = findViewById(R.id.fab1);
         fab2 = findViewById(R.id.fab2);
+        fab3 = findViewById(R.id.fab3);
         fabLayout1 = findViewById(R.id.fabLayout1);
         fabLayout2 = findViewById(R.id.fabLayout2);
+        fabLayout3 = findViewById(R.id.fabLayout3);
         fabBackground = findViewById(R.id.fabBackground);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -116,15 +118,19 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     private void showMenu() {
+        googleMap.getUiSettings().setZoomControlsEnabled(false);
+
         fabExtended = true;
 
         fabLayout1.setVisibility(View.VISIBLE);
         fabLayout2.setVisibility(View.VISIBLE);
+        fabLayout3.setVisibility(View.VISIBLE);
 
         fabBackground.setVisibility(View.VISIBLE);
 
         fabLayout1.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
         fabLayout2.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+        fabLayout3.animate().translationY(-getResources().getDimension(R.dimen.standard_145));
 
         AutoTransition autoTransition = new AutoTransition();
         TransitionManager.go(new Scene((CoordinatorLayout) fab.getParent()), autoTransition);
@@ -139,12 +145,15 @@ public class MapsActivity extends FragmentActivity implements
         fabBackground.setVisibility(View.GONE);
 
         fabLayout1.animate().translationY(0);
-        fabLayout2.animate().translationY(0).setListener(new Animator.AnimatorListener(){
+        fabLayout2.animate().translationY(0);
+        fabLayout3.animate().translationY(0).setListener(new Animator.AnimatorListener(){
             @Override public void onAnimationStart(Animator animation) {}
             @Override public void onAnimationEnd(Animator animation) {
                 if(!fabExtended) {
                     fabLayout1.setVisibility(View.GONE);
                     fabLayout2.setVisibility(View.GONE);
+                    fabLayout3.setVisibility(View.GONE);
+                    googleMap.getUiSettings().setZoomControlsEnabled(true);
                 }
             }
             @Override public void onAnimationCancel(Animator animation) {}
@@ -189,6 +198,7 @@ public class MapsActivity extends FragmentActivity implements
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.setIndoorEnabled(true);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
     }
 
     @Override
@@ -242,21 +252,23 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     @Override
-    public void fetchedRoomList(List<Room> rooms) {
+    public void fetchedDataList(List<Building> buildings) {
         googleMap.clear();
         if(lastLocation != null) {
             handleNewLocation(lastLocation);
         }
 
-        for(Room room : rooms) {
+        for(Building building : buildings) {
             MarkerOptions markerOptions = new MarkerOptions()
-                    .position(room.getLatLng())
-                    .title(room.getName())
-                    .snippet(room.getDescription());
+                    .position(building.getLatLng())
+                    .title(building.getName())
+                    .snippet(building.getLatLng().toString());
             Marker marker = googleMap.addMarker(markerOptions);
 
-            markers.put(room, marker);
+            markers.put(building, marker);
         }
+
+        Log.e(TAG, "fetchedDataList: " + markers.keySet());
     }
 
     @Override
