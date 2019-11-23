@@ -1,14 +1,19 @@
 package app.sagen.mysupersecretmapapp;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -20,15 +25,27 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import app.sagen.mysupersecretmapapp.data.Room;
 import app.sagen.mysupersecretmapapp.task.FetchRoomsTask;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, FetchRoomsTask.FetchRoomTaskCallback {
+public class MapsActivity extends FragmentActivity implements
+        OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener,
+        FetchRoomsTask.FetchRoomTaskCallback,
+        GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnMarkerDragListener {
 
     private static final String TAG = "MapsActivity";
 
@@ -36,6 +53,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Location lastLocation;
+
+    ExtendedFloatingActionButton fab;
+    FloatingActionButton fab1;
+    FloatingActionButton fab2;
+    LinearLayout fabLayout1;
+    LinearLayout fabLayout2;
+    View fabBackground;
+
+    private boolean fabExtended = false;
+
+    private Map<Room, Marker> markers = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +86,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         FetchRoomsTask fetchRoomsTask = new FetchRoomsTask("http://student.cs.hioa.no/~s326194/showRooms.php", this);
         fetchRoomsTask.execute();
+
+        fab = findViewById(R.id.fab);
+        fab1 = findViewById(R.id.fab1);
+        fab2 = findViewById(R.id.fab2);
+        fabLayout1 = findViewById(R.id.fabLayout1);
+        fabLayout2 = findViewById(R.id.fabLayout2);
+        fabBackground = findViewById(R.id.fabBackground);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFabMenu();
+            }
+        });
+    }
+
+    private void toggleFabMenu() {
+        if(!fabExtended) { // show
+
+            fabLayout1.setVisibility(View.VISIBLE);
+            fabLayout2.setVisibility(View.VISIBLE);
+
+            fabBackground.setVisibility(View.VISIBLE);
+
+            // fab.animate().rotationBy(180);
+
+            fabLayout1.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+            fabLayout2.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+
+            fab.shrink();
+            fab.setGravity(Gravity.END | Gravity.BOTTOM);
+
+        } else { // hide
+
+            fabBackground.setVisibility(View.GONE);
+
+            // fab.animate().rotationBy(0);
+
+            fab.extend();
+            fab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+
+            fabLayout1.animate().translationY(0);
+            fabLayout2.animate().translationY(0).setListener(new Animator.AnimatorListener(){
+                @Override public void onAnimationStart(Animator animation) {}
+                @Override public void onAnimationEnd(Animator animation) {
+                    if(!fabExtended) {
+                        fabLayout1.setVisibility(View.GONE);
+                        fabLayout2.setVisibility(View.GONE);
+                    }
+                }
+                @Override public void onAnimationCancel(Animator animation) {}
+                @Override public void onAnimationRepeat(Animator animation) {}
+            });
+
+        }
+        fabExtended = !fabExtended;
     }
 
     @Override
@@ -76,21 +160,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void handleNewLocation (Location location){
-        this.lastLocation = location;
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        if(lastLocation == null) googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f), 2000, null);
+        this.lastLocation = location;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(59.9139, 10.7522), 21.0f));
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.getUiSettings().setIndoorLevelPickerEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.setIndoorEnabled(true);
-        googleMap.setMyLocationEnabled(true);
     }
 
     @Override
@@ -104,6 +186,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             return;
         }
+        googleMap.setMyLocationEnabled(true);
         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         if (location == null) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
@@ -154,8 +237,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .position(room.getLatLng())
                     .title(room.getName())
                     .snippet(room.getDescription());
+            Marker marker = googleMap.addMarker(markerOptions);
 
-            googleMap.addMarker(markerOptions);
+            markers.put(room, marker);
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+
     }
 }
