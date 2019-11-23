@@ -71,6 +71,8 @@ public class MapsActivity extends FragmentActivity implements
 
     private Map<Building, Marker> markers = new HashMap<>();
 
+    Marker selectedMarker = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,15 +119,38 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
 
+        fab2.setOnClickListener(new View.OnClickListener(){
+            @Override public void onClick(View v) {
+                if(lastLocation != null && googleMap != null) {
+
+                    closeMenu();
+
+                    if(selectedMarker != null) {
+                        selectedMarker.remove();
+                        selectedMarker = null;
+                    }
+
+                    selectedMarker = googleMap.addMarker(new MarkerOptions()
+                            .draggable(true)
+                            .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
+                            .title("Legg til bygg"));
+
+                    fab.setVisibility(View.GONE);
+                    fab.setClickable(false);
+                }
+            }
+        });
+
         fab3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            @Override public void onClick(View v) {
                 View bottomDialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MapsActivity.this);
                 bottomSheetDialog.setContentView(bottomDialogView);
                 bottomSheetDialog.show();
 
                 closeMenu();
+                fab.setVisibility(View.GONE);
+                fab.setClickable(false);
             }
         });
     }
@@ -250,18 +275,8 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-        // todo:
-    }
-
-    @Override
     public void onLocationChanged(Location location) {
         handleNewLocation(location);
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 
     @Override
@@ -284,23 +299,14 @@ public class MapsActivity extends FragmentActivity implements
         Log.e(TAG, "fetchedDataList: " + markers.keySet());
     }
 
+
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public void onPointerCaptureChanged(boolean hasCapture) { }
+    @Override public boolean onMarkerClick(Marker marker) {
         return false;
     }
-
-    @Override
-    public void onMarkerDragStart(Marker marker) {
-
-    }
-
-    @Override
-    public void onMarkerDrag(Marker marker) {
-
-    }
-
-    @Override
-    public void onMarkerDragEnd(Marker marker) {
-
-    }
+    @Override public void onMarkerDragStart(Marker marker) { }
+    @Override public void onMarkerDrag(Marker marker) { }
+    @Override public void onMarkerDragEnd(Marker marker) { }
+    @Override public void onConnectionSuspended(int i) {}
 }
