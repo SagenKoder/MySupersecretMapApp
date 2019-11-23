@@ -30,6 +30,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -112,6 +113,18 @@ public class MapsActivity extends FragmentActivity implements
         fabBackground.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                closeMenu();
+            }
+        });
+
+        fab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View bottomDialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MapsActivity.this);
+                bottomSheetDialog.setContentView(bottomDialogView);
+                bottomSheetDialog.show();
+
                 closeMenu();
             }
         });
