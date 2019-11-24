@@ -1,11 +1,13 @@
 package app.sagen.mysupersecretmapapp;
 
+import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.animation.Animator;
+import android.app.AlertDialog;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -54,7 +56,8 @@ public class MapsActivity extends FragmentActivity implements
         LocationListener,
         FetchDataTask.FetchRoomTaskCallback,
         LatLngFromAddressTask.LatLngFromAddressCallback,
-        GoogleMap.OnMarkerClickListener {
+        GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnMarkerDragListener {
 
     private static final String TAG = "MapsActivity";
 
@@ -109,8 +112,16 @@ public class MapsActivity extends FragmentActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!fabExtended) showMenu();
-                else closeMenu();
+                if(selectedMarker != null) { // secondary mode
+                    fab.setText(getString(R.string.opprett_nytt_rom));
+                    fab.setIcon(getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
+
+                    selectedMarker.remove();
+                    selectedMarker = null;
+                } else {
+                    if (!fabExtended) showMenu();
+                    else closeMenu();
+                }
             }
         });
 
@@ -125,7 +136,8 @@ public class MapsActivity extends FragmentActivity implements
             @Override public void onClick(View v) {
                 if(lastLocation != null && googleMap != null) {
 
-                    setCreateBuildingMarker(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()));
+                    LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                    setCreateBuildingMarker(latLng, null);
 
                 }
             }
@@ -134,7 +146,7 @@ public class MapsActivity extends FragmentActivity implements
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 View bottomDialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MapsActivity.this);
+                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MapsActivity.this);
                 bottomSheetDialog.setContentView(bottomDialogView);
                 bottomSheetDialog.show();
 
@@ -148,6 +160,8 @@ public class MapsActivity extends FragmentActivity implements
                             return; // do nothing
                         }
 
+                        bottomSheetDialog.dismiss();
+
                         LatLngFromAddressTask latLngFromAddressTask = new LatLngFromAddressTask(
                                 getString(R.string.google_maps_key),
                                 MapsActivity.this);
@@ -158,8 +172,8 @@ public class MapsActivity extends FragmentActivity implements
                 searchForAddressButton.setClickable(true);
 
                 closeMenu();
-                fab.setVisibility(View.GONE);
-                fab.setClickable(false);
+                //fab.setVisibility(View.GONE);
+                //fab.setClickable(false);
             }
         });
 
@@ -168,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements
         fetchDataTask.execute();
     }
 
-    private void setCreateBuildingMarker(LatLng latLng) {
+    private void setCreateBuildingMarker(LatLng latLng, @Nullable LatLngBounds bounds) {
 
         closeMenu();
 
@@ -180,12 +194,47 @@ public class MapsActivity extends FragmentActivity implements
         selectedMarker = googleMap.addMarker(new MarkerOptions()
                 .draggable(true)
                 .position(latLng)
-                .title("Legg til bygg"));
+                .title("Legg til bygg her")
+                .draggable(true)
+                .snippet("Flytt meg og trykk 'Ferdig'"));
 
         selectedMarker.showInfoWindow();
 
-        fab.setVisibility(View.GONE);
-        fab.setClickable(false);
+        fab.setText("Ferdig");
+        fab.setIcon(getDrawable(R.drawable.ic_create_white_24dp));
+
+        GoogleMap.CancelableCallback cancelableCallback = new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this)
+                        .setMessage("Trykk og hold markøren for å flytte den rundt. Klikk 'Ferdig' når du har den der du vil.")
+                        .setTitle("Flytte markøren")
+                        .setNeutralButton("Ok", null)
+                        .setCancelable(true)
+                        .create();
+                alertDialog.show();
+            }
+
+            @Override
+            public void onCancel() {
+                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this)
+                        .setMessage("Trykk og hold markøren for å flytte den rundt. Klikk 'Ferdig' når du har den der du vil.")
+                        .setTitle("Flytte markøren")
+                        .setNeutralButton("Ok", null)
+                        .setCancelable(true)
+                        .create();
+                alertDialog.show();
+            }
+        };
+
+        if(bounds == null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng), cancelableCallback);
+        } else {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0), cancelableCallback);
+        }
+
+        //fab.setVisibility(View.GONE);
+        //fab.setClickable(false);
 
     }
 
@@ -266,11 +315,9 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(59.9139, 10.7522), 21.0f));
-        googleMap.getUiSettings().setIndoorLevelPickerEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        googleMap.getUiSettings().setMapToolbarEnabled(true);
-        googleMap.setIndoorEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.setOnMarkerDragListener(this);
     }
 
     @Override
@@ -337,10 +384,8 @@ public class MapsActivity extends FragmentActivity implements
     public void fetchedLatLngFromAddress(LatLngResult result) {
         Log.d(TAG, "fetchedLatLngFromAddress: Fetched LatLng data from address: \nData: " + result);
 
-        setCreateBuildingMarker(result.getLatLng());
-
         LatLngBounds latLngBounds = new LatLngBounds(result.getSouthWest(), result.getNorthEast());
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 0));
+        setCreateBuildingMarker(result.getLatLng(), latLngBounds);
     }
 
     @Override
@@ -355,4 +400,7 @@ public class MapsActivity extends FragmentActivity implements
         return false;
     }
     @Override public void onConnectionSuspended(int i) {}
+    @Override public void onMarkerDragStart(Marker marker) { }
+    @Override public void onMarkerDrag(Marker marker) { }
+    @Override public void onMarkerDragEnd(Marker marker) { }
 }
