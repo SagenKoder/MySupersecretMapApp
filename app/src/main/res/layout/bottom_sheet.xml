@@ -58,10 +58,10 @@
             android:layout_height="wrap_content"
             android:text="Skriv inn addresse"
             android:textColor="@color/colorPrimary"
-            android:labelFor="@id/address_field" />
+            android:labelFor="@id/search_for_address_field" />
 
         <EditText
-            android:id="@+id/address_field"
+            android:id="@+id/search_for_address_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
@@ -71,6 +71,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/search_for_address_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"

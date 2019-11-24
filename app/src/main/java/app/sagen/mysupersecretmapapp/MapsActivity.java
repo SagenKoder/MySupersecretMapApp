@@ -16,6 +16,8 @@ import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -40,7 +43,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import app.sagen.mysupersecretmapapp.data.Building;
+import app.sagen.mysupersecretmapapp.data.LatLngResult;
 import app.sagen.mysupersecretmapapp.task.FetchDataTask;
+import app.sagen.mysupersecretmapapp.task.LatLngFromAddressTask;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -48,8 +53,8 @@ public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
         FetchDataTask.FetchRoomTaskCallback,
-        GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnMarkerDragListener {
+        LatLngFromAddressTask.LatLngFromAddressCallback,
+        GoogleMap.OnMarkerClickListener {
 
     private static final String TAG = "MapsActivity";
 
@@ -92,9 +97,6 @@ public class MapsActivity extends FragmentActivity implements
                 .setInterval(10 * 1000)
                 .setFastestInterval(1000);
 
-        FetchDataTask fetchDataTask = new FetchDataTask("http://student.cs.hioa.no/~s326194/showBuildings.php", this);
-        fetchDataTask.execute();
-
         fab = findViewById(R.id.fab);
         fab1 = findViewById(R.id.fab1);
         fab2 = findViewById(R.id.fab2);
@@ -123,20 +125,8 @@ public class MapsActivity extends FragmentActivity implements
             @Override public void onClick(View v) {
                 if(lastLocation != null && googleMap != null) {
 
-                    closeMenu();
+                    setCreateBuildingMarker(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()));
 
-                    if(selectedMarker != null) {
-                        selectedMarker.remove();
-                        selectedMarker = null;
-                    }
-
-                    selectedMarker = googleMap.addMarker(new MarkerOptions()
-                            .draggable(true)
-                            .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
-                            .title("Legg til bygg"));
-
-                    fab.setVisibility(View.GONE);
-                    fab.setClickable(false);
                 }
             }
         });
@@ -148,11 +138,55 @@ public class MapsActivity extends FragmentActivity implements
                 bottomSheetDialog.setContentView(bottomDialogView);
                 bottomSheetDialog.show();
 
+                final EditText searchForAddress = bottomDialogView.findViewById(R.id.search_for_address_field);
+                Button searchForAddressButton = bottomDialogView.findViewById(R.id.search_for_address_button);
+
+                searchForAddressButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(searchForAddress.getText().toString().trim().equals("")) {
+                            return; // do nothing
+                        }
+
+                        LatLngFromAddressTask latLngFromAddressTask = new LatLngFromAddressTask(
+                                getString(R.string.google_maps_key),
+                                MapsActivity.this);
+                        latLngFromAddressTask.execute(searchForAddress.getText().toString());
+                    }
+                });
+
+                searchForAddressButton.setClickable(true);
+
                 closeMenu();
                 fab.setVisibility(View.GONE);
                 fab.setClickable(false);
             }
         });
+
+        // fetch data
+        FetchDataTask fetchDataTask = new FetchDataTask( this);
+        fetchDataTask.execute();
+    }
+
+    private void setCreateBuildingMarker(LatLng latLng) {
+
+        closeMenu();
+
+        if(selectedMarker != null) {
+            selectedMarker.remove();
+            selectedMarker = null;
+        }
+
+        selectedMarker = googleMap.addMarker(new MarkerOptions()
+                .draggable(true)
+                .position(latLng)
+                .title("Legg til bygg"));
+
+        selectedMarker.showInfoWindow();
+
+        fab.setVisibility(View.GONE);
+        fab.setClickable(false);
+
     }
 
     private void showMenu() {
@@ -296,7 +330,22 @@ public class MapsActivity extends FragmentActivity implements
             markers.put(building, marker);
         }
 
-        Log.e(TAG, "fetchedDataList: " + markers.keySet());
+        Log.d(TAG, "fetchedDataList: " + markers.keySet());
+    }
+
+    @Override
+    public void fetchedLatLngFromAddress(LatLngResult result) {
+        Log.d(TAG, "fetchedLatLngFromAddress: Fetched LatLng data from address: \nData: " + result);
+
+        setCreateBuildingMarker(result.getLatLng());
+
+        LatLngBounds latLngBounds = new LatLngBounds(result.getSouthWest(), result.getNorthEast());
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 0));
+    }
+
+    @Override
+    public void fetchLatLngFromAddressFailed() {
+        Log.e(TAG, "fetchLatLngFromAddressFailed: Failed to get geolocation from address");
     }
 
 
@@ -305,8 +354,5 @@ public class MapsActivity extends FragmentActivity implements
     @Override public boolean onMarkerClick(Marker marker) {
         return false;
     }
-    @Override public void onMarkerDragStart(Marker marker) { }
-    @Override public void onMarkerDrag(Marker marker) { }
-    @Override public void onMarkerDragEnd(Marker marker) { }
     @Override public void onConnectionSuspended(int i) {}
 }
