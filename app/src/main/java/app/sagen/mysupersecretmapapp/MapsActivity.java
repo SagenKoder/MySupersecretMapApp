@@ -83,7 +83,8 @@ public class MapsActivity extends FragmentActivity implements
 
     private Map<Building, Marker> markers = new HashMap<>();
 
-    Marker selectedMarker = null;
+    Marker selectedLocationMarker = null;
+    Marker selectedBuildingMarker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,16 +117,26 @@ public class MapsActivity extends FragmentActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedMarker != null) { // secondary mode
+                if(selectedBuildingMarker != null) { // manage building mode
                     fab.setText(getString(R.string.opprett_nytt_rom));
                     fab.setIcon(getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
 
-                    final LatLng markerPosition = selectedMarker.getPosition();
+                    Building building = (Building) selectedBuildingMarker.getTag();
 
-                    selectedMarker.remove();
-                    selectedMarker = null;
+                    selectedBuildingMarker = null;
 
-                    // todo: Show confirmation menu
+                    Intent intent = new Intent();
+                    intent.putExtra("MyBuilding", building);
+
+                } else if (selectedLocationMarker != null) { // manage new location mode
+                    fab.setText(getString(R.string.opprett_nytt_rom));
+                    fab.setIcon(getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
+
+                    final LatLng markerPosition = selectedLocationMarker.getPosition();
+
+                    selectedLocationMarker.remove();
+                    selectedLocationMarker = null;
+
                     AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this)
                             .setMessage("Vil du opprette ett nytt bygg her?")
                             .setTitle("Opprette nytt bygg")
@@ -235,19 +246,19 @@ public class MapsActivity extends FragmentActivity implements
 
         closeMenu();
 
-        if (selectedMarker != null) {
-            selectedMarker.remove();
-            selectedMarker = null;
+        if (selectedLocationMarker != null) {
+            selectedLocationMarker.remove();
+            selectedLocationMarker = null;
         }
 
-        selectedMarker = googleMap.addMarker(new MarkerOptions()
+        selectedLocationMarker = googleMap.addMarker(new MarkerOptions()
                 .draggable(true)
                 .position(latLng)
                 .title("Legg til bygg her")
                 .draggable(true)
                 .snippet("Flytt meg og trykk 'Ferdig'"));
 
-        selectedMarker.showInfoWindow();
+        selectedLocationMarker.showInfoWindow();
 
         fab.setText("Ferdig");
         fab.setIcon(getDrawable(R.drawable.ic_create_white_24dp));
@@ -351,6 +362,12 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapClick(LatLng latLng) {
+        if(selectedBuildingMarker != null) {
+            fab.setText(getString(R.string.opprett_nytt_rom));
+            fab.setIcon(getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
+            selectedBuildingMarker = null;
+        }
+
         if (setSelectedMarkerMode) {
             setSelectedMarkerMode = false;
 
@@ -394,6 +411,7 @@ public class MapsActivity extends FragmentActivity implements
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.setOnMarkerDragListener(this);
         googleMap.setOnMapClickListener(this);
+        googleMap.setOnMarkerClickListener(this);
     }
 
     @Override
@@ -453,7 +471,7 @@ public class MapsActivity extends FragmentActivity implements
                     .title(building.getName())
                     .snippet(building.getLatLng().toString());
             Marker marker = googleMap.addMarker(markerOptions);
-
+            marker.setTag(building);
             markers.put(building, marker);
         }
 
@@ -480,6 +498,16 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+
+        if(marker.getTag() instanceof Building) {
+
+            selectedBuildingMarker = marker;
+
+            fab.setText("Vis detaljer");
+            fab.setIcon(getDrawable(R.drawable.ic_arrow_drop_up_white_24dp));
+
+        }
+
         return false;
     }
 

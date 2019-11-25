@@ -1,5 +1,8 @@
 package app.sagen.mysupersecretmapapp.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,7 +10,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room {
+public class Room implements Parcelable {
+
+    public static final Creator<Room> CREATOR = new Creator<Room>() {
+        @Override
+        public Room createFromParcel(Parcel in) {
+            return new Room(in);
+        }
+
+        @Override
+        public Room[] newArray(int size) {
+            return new Room[size];
+        }
+    };
 
     private int id;
     private String name;
@@ -35,6 +50,14 @@ public class Room {
         for (int i = 0; i < reservations.length(); i++) {
             this.reservations.add(new Reservation(this, reservations.getJSONObject(i)));
         }
+    }
+
+    protected Room(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        building = in.readParcelable(Building.class.getClassLoader());
+        reservations = in.createTypedArrayList(Reservation.CREATOR);
     }
 
     public int getId() {
@@ -71,6 +94,20 @@ public class Room {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeParcelable(building, flags);
+        dest.writeTypedList(reservations);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Override
