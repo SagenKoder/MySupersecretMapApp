@@ -19,7 +19,7 @@
         android:id="@+id/fabBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/fabLayout1"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fra kart"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab1"
@@ -50,7 +50,7 @@
             android:focusable="true"
             app:elevation="8dp"
             android:clickable="true"
-            app:fabSize="mini"/>
+            app:fabSize="mini" />
 
     </LinearLayout>
 
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fra GPS"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab2"
@@ -83,7 +83,7 @@
             android:focusable="true"
             app:elevation="8dp"
             android:clickable="true"
-            app:fabSize="mini"/>
+            app:fabSize="mini" />
 
     </LinearLayout>
 
@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fra addresse"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab3"
@@ -116,7 +116,7 @@
             android:focusable="true"
             app:elevation="8dp"
             android:clickable="true"
-            app:fabSize="mini"/>
+            app:fabSize="mini" />
 
     </LinearLayout>
 
@@ -135,6 +135,6 @@
         android:clickable="true"
         android:layout_marginStart="@dimen/standard_23"
         android:layout_marginEnd="@dimen/standard_23"
-        android:layout_marginBottom="@dimen/fab_margin"/>
+        android:layout_marginBottom="@dimen/fab_margin" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

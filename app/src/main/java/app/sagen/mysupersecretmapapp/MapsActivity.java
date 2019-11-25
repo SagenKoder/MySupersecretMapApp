@@ -1,13 +1,10 @@
 package app.sagen.mysupersecretmapapp;
 
-import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.animation.Animator;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -21,6 +18,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,7 +59,8 @@ public class MapsActivity extends FragmentActivity implements
         FetchDataTask.FetchRoomTaskCallback,
         LatLngFromAddressTask.LatLngFromAddressCallback,
         GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnMarkerDragListener {
+        GoogleMap.OnMarkerDragListener,
+        GoogleMap.OnMapClickListener {
 
     private static final String TAG = "MapsActivity";
 
@@ -76,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements
     View fabBackground;
 
     private boolean fabExtended = false;
+    private boolean setSelectedMarkerMode = false;
 
     private Map<Building, Marker> markers = new HashMap<>();
 
@@ -112,12 +116,35 @@ public class MapsActivity extends FragmentActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedMarker != null) { // secondary mode
+                if (selectedMarker != null) { // secondary mode
                     fab.setText(getString(R.string.opprett_nytt_rom));
                     fab.setIcon(getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
 
+                    final LatLng markerPosition = selectedMarker.getPosition();
+
                     selectedMarker.remove();
                     selectedMarker = null;
+
+                    // todo: Show confirmation menu
+                    AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this)
+                            .setMessage("Vil du opprette ett nytt bygg her?")
+                            .setTitle("Opprette nytt bygg")
+                            .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent intent = new Intent(MapsActivity.this, CreateBuildingActivity.class);
+                                    intent.putExtra("app.dagen.mysupersecretmapapp.location.lat", markerPosition.latitude);
+                                    intent.putExtra("app.dagen.mysupersecretmapapp.location.lng", markerPosition.longitude);
+                                    startActivity(intent);
+
+                                }
+                            })
+                            .setNegativeButton("Nei", null)
+                            .setCancelable(true)
+                            .create();
+                    alertDialog.show();
+
                 } else {
                     if (!fabExtended) showMenu();
                     else closeMenu();
@@ -125,16 +152,37 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
 
-        fabBackground.setOnClickListener(new View.OnClickListener(){
+        fabBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 closeMenu();
             }
         });
 
-        fab2.setOnClickListener(new View.OnClickListener(){
-            @Override public void onClick(View v) {
-                if(lastLocation != null && googleMap != null) {
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeMenu();
+
+                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this)
+                        .setMessage("Trykk på kartet for å plassere en markør der du vil legge til et bygg")
+                        .setTitle("Sett markøren")
+                        .setNeutralButton("Ok", null)
+                        .setCancelable(true)
+                        .create();
+                alertDialog.show();
+
+                fab.setVisibility(View.GONE);
+                fab.setClickable(false);
+
+                setSelectedMarkerMode = true;
+            }
+        });
+
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lastLocation != null && googleMap != null) {
 
                     LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
                     setCreateBuildingMarker(latLng, null);
@@ -144,7 +192,8 @@ public class MapsActivity extends FragmentActivity implements
         });
 
         fab3.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 View bottomDialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MapsActivity.this);
                 bottomSheetDialog.setContentView(bottomDialogView);
@@ -156,7 +205,7 @@ public class MapsActivity extends FragmentActivity implements
                 searchForAddressButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(searchForAddress.getText().toString().trim().equals("")) {
+                        if (searchForAddress.getText().toString().trim().equals("")) {
                             return; // do nothing
                         }
 
@@ -178,7 +227,7 @@ public class MapsActivity extends FragmentActivity implements
         });
 
         // fetch data
-        FetchDataTask fetchDataTask = new FetchDataTask( this);
+        FetchDataTask fetchDataTask = new FetchDataTask(this);
         fetchDataTask.execute();
     }
 
@@ -186,7 +235,7 @@ public class MapsActivity extends FragmentActivity implements
 
         closeMenu();
 
-        if(selectedMarker != null) {
+        if (selectedMarker != null) {
             selectedMarker.remove();
             selectedMarker = null;
         }
@@ -227,8 +276,8 @@ public class MapsActivity extends FragmentActivity implements
             }
         };
 
-        if(bounds == null) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng), cancelableCallback);
+        if (bounds == null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20), cancelableCallback);
         } else {
             googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0), cancelableCallback);
         }
@@ -267,18 +316,28 @@ public class MapsActivity extends FragmentActivity implements
 
         fabLayout1.animate().translationY(0);
         fabLayout2.animate().translationY(0);
-        fabLayout3.animate().translationY(0).setListener(new Animator.AnimatorListener(){
-            @Override public void onAnimationStart(Animator animation) {}
-            @Override public void onAnimationEnd(Animator animation) {
-                if(!fabExtended) {
+        fabLayout3.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (!fabExtended) {
                     fabLayout1.setVisibility(View.GONE);
                     fabLayout2.setVisibility(View.GONE);
                     fabLayout3.setVisibility(View.GONE);
                     googleMap.getUiSettings().setZoomControlsEnabled(true);
                 }
             }
-            @Override public void onAnimationCancel(Animator animation) {}
-            @Override public void onAnimationRepeat(Animator animation) {}
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
 
         fab.extend();
@@ -288,6 +347,18 @@ public class MapsActivity extends FragmentActivity implements
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
         layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
         fab.setLayoutParams(layoutParams);
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        if (setSelectedMarkerMode) {
+            setSelectedMarkerMode = false;
+
+            fab.setVisibility(View.VISIBLE);
+            fab.setClickable(true);
+
+            setCreateBuildingMarker(latLng, null);
+        }
     }
 
     @Override
@@ -303,11 +374,15 @@ public class MapsActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
         googleApiClient.connect();
+
+        FetchDataTask fetchDataTask = new FetchDataTask(this);
+        fetchDataTask.execute();
     }
 
-    public void handleNewLocation (Location location){
+    public void handleNewLocation(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        if(lastLocation == null) googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f), 2000, null);
+        if (lastLocation == null)
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f), 2000, null);
         this.lastLocation = location;
     }
 
@@ -318,6 +393,7 @@ public class MapsActivity extends FragmentActivity implements
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.setOnMarkerDragListener(this);
+        googleMap.setOnMapClickListener(this);
     }
 
     @Override
@@ -328,7 +404,7 @@ public class MapsActivity extends FragmentActivity implements
                     Manifest.permission.ACCESS_COARSE_LOCATION
             }, 0);
         }
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         googleMap.setMyLocationEnabled(true);
@@ -350,8 +426,7 @@ public class MapsActivity extends FragmentActivity implements
                 e.printStackTrace();
             }
         } else {
-            Log.i(TAG, "Location services connection failed with code " +
-                    connectionResult.getErrorCode());
+            Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
         }
     }
 
@@ -363,11 +438,16 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void fetchedDataList(List<Building> buildings) {
         googleMap.clear();
-        if(lastLocation != null) {
+        if (lastLocation != null) {
             handleNewLocation(lastLocation);
         }
 
-        for(Building building : buildings) {
+        for (Map.Entry<Building, Marker> e : markers.entrySet()) {
+            e.getValue().remove();
+        }
+        markers.clear();
+
+        for (Building building : buildings) {
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(building.getLatLng())
                     .title(building.getName())
@@ -377,7 +457,7 @@ public class MapsActivity extends FragmentActivity implements
             markers.put(building, marker);
         }
 
-        Log.d(TAG, "fetchedDataList: " + markers.keySet());
+        Log.d(TAG, "buildingCreated: " + markers.keySet());
     }
 
     @Override
@@ -395,12 +475,27 @@ public class MapsActivity extends FragmentActivity implements
 
 
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) { }
-    @Override public boolean onMarkerClick(Marker marker) {
+    public void onPointerCaptureChanged(boolean hasCapture) {
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
         return false;
     }
-    @Override public void onConnectionSuspended(int i) {}
-    @Override public void onMarkerDragStart(Marker marker) { }
-    @Override public void onMarkerDrag(Marker marker) { }
-    @Override public void onMarkerDragEnd(Marker marker) { }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+    }
 }

@@ -32,7 +32,7 @@ public class Room {
         reservations = new ArrayList<>();
 
         JSONArray reservations = jsonObject.getJSONArray("reservations");
-        for(int i = 0; i < reservations.length(); i++) {
+        for (int i = 0; i < reservations.length(); i++) {
             this.reservations.add(new Reservation(this, reservations.getJSONObject(i)));
         }
     }

@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
             android:hint="Pilestredet 48"
-            android:backgroundTint="@color/colorPrimary"/>
+            android:backgroundTint="@color/colorPrimary" />
 
     </LinearLayout>
 

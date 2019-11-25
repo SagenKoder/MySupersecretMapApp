@@ -33,24 +33,27 @@ public class Util {
 
         StringBuilder stringBuilder = new StringBuilder();
         String line;
-        while((line = bufferedReader.readLine()) != null) {
+        while ((line = bufferedReader.readLine()) != null) {
             stringBuilder.append(line);
         }
 
         return stringBuilder.toString();
     }
 
-    private static String readStringFrom(URL url) throws IOException {
+    public static String readStringFrom(URL url) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
 
         int responseCode = conn.getResponseCode();
-        if(responseCode != 200) {
+        if (responseCode != 200) {
             throw new RuntimeException("Failed to fetch json from api! Got HTTP status " + responseCode + " from server!\nApi: " + url.toString());
         }
 
-        return readFromStream(conn.getInputStream());
+        String data = readFromStream(conn.getInputStream());
+        conn.disconnect();
+
+        return data;
     }
 
     public static JSONObject readJsonObjectFrom(URL url) throws IOException, JSONException {

@@ -31,7 +31,7 @@ public class Building {
         this.rooms = new ArrayList<>();
 
         JSONArray rooms = jsonObject.getJSONArray("rooms");
-        for(int i = 0; i < rooms.length(); i++) {
+        for (int i = 0; i < rooms.length(); i++) {
             this.rooms.add(new Room(this, rooms.getJSONObject(i)));
         }
     }
@@ -76,8 +76,8 @@ public class Building {
     }
 
     public void setLatLng(LatLng latLng) {
-        this.geolat = (float)latLng.latitude;
-        this.geolng = (float)latLng.longitude;
+        this.geolat = (float) latLng.latitude;
+        this.geolng = (float) latLng.longitude;
     }
 
     public LatLng getLatLng() {
