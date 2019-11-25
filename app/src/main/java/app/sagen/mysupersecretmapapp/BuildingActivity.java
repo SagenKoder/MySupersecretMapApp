@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -18,6 +19,8 @@ import app.sagen.mysupersecretmapapp.data.Room;
 import app.sagen.mysupersecretmapapp.util.Utils;
 
 public class BuildingActivity extends AppCompatActivity {
+
+    private static final String TAG = "BuildingActivity";
 
     Building building;
     ListView listView;
@@ -72,6 +75,8 @@ public class BuildingActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK && data != null) {
                 Room room = data.getParcelableExtra(Room.class.getName());
                 if(room != null) {
+                    Utils.fixParcelableReferences(room);
+                    room.setBuilding(building);
                     roomListAdapter.addItem(room);
                 }
             }

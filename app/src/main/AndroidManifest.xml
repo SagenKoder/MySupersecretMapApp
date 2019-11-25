@@ -21,7 +21,7 @@
         <activity
             android:name=".CreateRoomActivity"
             android:label="@string/title_activity_create_room"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".BuildingActivity"
             android:label="@string/title_activity_building"

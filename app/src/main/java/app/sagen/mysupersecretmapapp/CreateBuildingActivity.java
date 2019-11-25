@@ -48,6 +48,9 @@ public class CreateBuildingActivity extends AppCompatActivity implements CreateB
                 } else {
                     CreateBuildingTask createBuildingTask = new CreateBuildingTask(CreateBuildingActivity.this);
                     createBuildingTask.execute(new Building(nameField.getText().toString().trim(), lat, lng));
+
+                    fabCreate.setClickable(false);
+                    Snackbar.make(view, "Oppretter bygning....", Snackbar.LENGTH_LONG).show();
                 }
             }
         });

@@ -65,6 +65,7 @@ public class CreateRoomActivity extends AppCompatActivity implements CreateRoomT
                     CreateRoomTask createRoomTask = new CreateRoomTask(CreateRoomActivity.this);
                     createRoomTask.execute(room);
 
+                    fabCreate.setClickable(false);
                     Snackbar.make(view, "Oppretter rom....", Snackbar.LENGTH_LONG).show();
                 }
             }
@@ -76,8 +77,8 @@ public class CreateRoomActivity extends AppCompatActivity implements CreateRoomT
         Snackbar.make(fabCreate.getRootView(), "Rom opprettet", Snackbar.LENGTH_LONG).show();
 
         Intent intent = new Intent();
-        setResult(RESULT_OK);
         intent.putExtra(Room.class.getName(), room);
+        setResult(RESULT_OK, intent);
         finish();
     }
 }
