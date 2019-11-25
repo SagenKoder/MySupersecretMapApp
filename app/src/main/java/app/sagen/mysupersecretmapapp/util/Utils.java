@@ -23,9 +23,11 @@ import app.sagen.mysupersecretmapapp.data.Building;
 import app.sagen.mysupersecretmapapp.data.Reservation;
 import app.sagen.mysupersecretmapapp.data.Room;
 
-public class Util {
+public class Utils {
 
-    public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+    public static final int CREATE_ROOM_REQUEST_CODE = 20;
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
     public static Date parseJsonDate(String jsonDate) {
         try {
@@ -36,7 +38,7 @@ public class Util {
         return null;
     }
 
-    private static String readFromStream(InputStream inputStream) throws IOException {
+    public static String readStringFromStream(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -58,7 +60,7 @@ public class Util {
             throw new RuntimeException("Failed to fetch json from api! Got HTTP status " + responseCode + " from server!\nApi: " + url.toString());
         }
 
-        String data = readFromStream(conn.getInputStream());
+        String data = readStringFromStream(conn.getInputStream());
         conn.disconnect();
 
         return data;
@@ -99,6 +101,10 @@ public class Util {
         for(Reservation reservation : room.getReservations()) {
             reservation.setRoom(room);
         }
+    }
+
+    public static String formatStringForUrl(String string) {
+        return string.replaceAll("\\s", "%20");
     }
 
 }

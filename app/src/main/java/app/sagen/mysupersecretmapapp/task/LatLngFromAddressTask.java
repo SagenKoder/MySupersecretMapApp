@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.net.URL;
 
 import app.sagen.mysupersecretmapapp.data.LatLngResult;
-import app.sagen.mysupersecretmapapp.util.Util;
+import app.sagen.mysupersecretmapapp.util.Utils;
 
 public class LatLngFromAddressTask extends AsyncTask<String, Void, LatLngResult> {
 
@@ -44,7 +44,7 @@ public class LatLngFromAddressTask extends AsyncTask<String, Void, LatLngResult>
                         .replace("%KEY%", apiKey)
                         .replace("%ADDRESS%", string.replaceAll("\\s", "%20")));
 
-                JSONObject jsonObject = Util.readJsonObjectFrom(url);
+                JSONObject jsonObject = Utils.readJsonObjectFrom(url);
 
                 if (!jsonObject.getString("status").equals("OK")) {
                     throw new RuntimeException("Got a non-ok status from maps API!\nStatus: " + jsonObject.getString("status"));

@@ -55,7 +55,7 @@ public class CreateBuildingActivity extends AppCompatActivity implements CreateB
 
     @Override
     public void buildingCreated() {
-        Snackbar.make(fabCreate.getRootView(), "Bygg opprettet <3", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(fabCreate.getRootView(), "Bygg opprettet", Snackbar.LENGTH_LONG).show();
 
         finish();
     }

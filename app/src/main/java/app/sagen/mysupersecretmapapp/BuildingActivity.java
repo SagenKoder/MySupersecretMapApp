@@ -1,26 +1,27 @@
 package app.sagen.mysupersecretmapapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 
 import app.sagen.mysupersecretmapapp.adapter.RoomListAdapter;
 import app.sagen.mysupersecretmapapp.data.Building;
-import app.sagen.mysupersecretmapapp.util.Util;
+import app.sagen.mysupersecretmapapp.data.Room;
+import app.sagen.mysupersecretmapapp.util.Utils;
 
 public class BuildingActivity extends AppCompatActivity {
 
+    Building building;
     ListView listView;
+    RoomListAdapter roomListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +31,23 @@ public class BuildingActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Building building = getIntent().getParcelableExtra(Building.class.getName());
+        building = getIntent().getParcelableExtra(Building.class.getName());
         if(building == null) {
             throw new RuntimeException("Could not get building from intent!");
         }
-        Util.fixParcelableReferences(building);
+        Utils.fixParcelableReferences(building);
 
         setTitle(building.getName());
 
         listView = findViewById(R.id.list_view);
-        listView.setAdapter(new RoomListAdapter(this, building.getRooms()));
+
+        roomListAdapter = new RoomListAdapter(this, building.getRooms());
+        listView.setAdapter(roomListAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -51,10 +59,23 @@ public class BuildingActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.building_menu_addroom) {
-
-            // todo: create new room
-
+            Intent intent = new Intent(this, CreateRoomActivity.class);
+            intent.putExtra(Building.class.getName(), building);
+            startActivityForResult(intent, 20);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == Utils.CREATE_ROOM_REQUEST_CODE) {
+            if(resultCode == RESULT_OK && data != null) {
+                Room room = data.getParcelableExtra(Room.class.getName());
+                if(room != null) {
+                    roomListAdapter.addItem(room);
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

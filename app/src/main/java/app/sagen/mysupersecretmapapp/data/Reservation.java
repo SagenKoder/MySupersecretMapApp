@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-import app.sagen.mysupersecretmapapp.util.Util;
+import app.sagen.mysupersecretmapapp.util.Utils;
 
 public class Reservation implements Parcelable {
 
@@ -39,8 +39,8 @@ public class Reservation implements Parcelable {
         this.room = room;
 
         id = jsonObject.getInt("id");
-        from = Util.parseJsonDate(jsonObject.getString("datetime_from"));
-        to = Util.parseJsonDate(jsonObject.getString("datetime_to"));
+        from = Utils.parseJsonDate(jsonObject.getString("datetime_from"));
+        to = Utils.parseJsonDate(jsonObject.getString("datetime_to"));
         durationInSeconds = jsonObject.getInt("durationInSeconds");
     }
 

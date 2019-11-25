@@ -46,7 +46,7 @@ public class CreateBuildingTask extends AsyncTask<Building, Void, Void> {
                 conn.disconnect();
 
             } catch (Exception e) {
-                Log.e(TAG, "doInBackground: Error while loading buildings!", e);
+                Log.e(TAG, "doInBackground: Error while creating building!", e);
             }
         }
         return null;

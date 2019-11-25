@@ -51,11 +51,18 @@ public class Room implements Parcelable {
         }
     }
 
+    public Room() {
+    }
+
     protected Room(Parcel in) {
         id = in.readInt();
         name = in.readString();
         description = in.readString();
         reservations = in.createTypedArrayList(Reservation.CREATOR);
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {

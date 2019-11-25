@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.sagen.mysupersecretmapapp.data.Building;
-import app.sagen.mysupersecretmapapp.util.Util;
+import app.sagen.mysupersecretmapapp.util.Utils;
 
 public class FetchDataTask extends AsyncTask<Void, Void, List<Building>> {
 
@@ -41,7 +41,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, List<Building>> {
 
         List<Building> buildings = new ArrayList<>();
         try {
-            JSONArray jsonArray = Util.readJsonArrayFrom(apiUri);
+            JSONArray jsonArray = Utils.readJsonArrayFrom(apiUri);
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

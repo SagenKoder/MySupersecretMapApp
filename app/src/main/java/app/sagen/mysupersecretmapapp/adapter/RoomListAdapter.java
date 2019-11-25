@@ -10,7 +10,7 @@ import java.util.List;
 
 import app.sagen.mysupersecretmapapp.R;
 import app.sagen.mysupersecretmapapp.data.Room;
-import app.sagen.mysupersecretmapapp.util.Util;
+import app.sagen.mysupersecretmapapp.util.Utils;
 
 public class RoomListAdapter extends BaseAdapter {
 
@@ -20,6 +20,11 @@ public class RoomListAdapter extends BaseAdapter {
     public RoomListAdapter(Activity context, List<Room> rooms) {
         this.context = context;
         this.rooms = rooms;
+    }
+
+    public void addItem(Room room) {
+        this.rooms.add(room);
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -54,7 +59,7 @@ public class RoomListAdapter extends BaseAdapter {
         roomName.setText(room.getName());
         roomDesc.setText(room.getDescription());
         roomBuilding.setText(room.getBuilding().getName());
-        roomReservations.setText(String.valueOf(Util.getAllReservationsToday(room).size()));
+        roomReservations.setText(String.valueOf(Utils.getAllReservationsToday(room).size()));
 
         return view;
     }
