@@ -28,7 +28,6 @@ public class Room implements Parcelable {
     private String name;
     private String description;
     private Building building;
-
     private List<Reservation> reservations;
 
     public Room(Building building) {
@@ -56,7 +55,6 @@ public class Room implements Parcelable {
         id = in.readInt();
         name = in.readString();
         description = in.readString();
-        building = in.readParcelable(Building.class.getClassLoader());
         reservations = in.createTypedArrayList(Reservation.CREATOR);
     }
 
@@ -101,7 +99,6 @@ public class Room implements Parcelable {
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeString(description);
-        dest.writeParcelable(building, flags);
         dest.writeTypedList(reservations);
     }
 

@@ -1,5 +1,7 @@
 package app.sagen.mysupersecretmapapp.util;
 
+import android.text.format.DateUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,8 +14,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import app.sagen.mysupersecretmapapp.data.Building;
+import app.sagen.mysupersecretmapapp.data.Reservation;
+import app.sagen.mysupersecretmapapp.data.Room;
 
 public class Util {
 
@@ -62,6 +70,35 @@ public class Util {
 
     public static JSONArray readJsonArrayFrom(URL url) throws IOException, JSONException {
         return new JSONArray(readStringFrom(url));
+    }
+
+    public static List<Reservation> getAllReservationsToday(Room room) {
+        List<Reservation> reservations = new ArrayList<>();
+        for(Reservation reservation : room.getReservations()) {
+            if(DateUtils.isToday(reservation.getFrom().getTime())) {
+                reservations.add(reservation);
+            }
+        }
+        return reservations;
+    }
+
+    public static void fixParcelableReferences(List<Building> buildings) {
+        for(Building building : buildings) {
+            fixParcelableReferences(building);
+        }
+    }
+
+    public static void fixParcelableReferences(Building building) {
+        for(Room room : building.getRooms()) {
+            room.setBuilding(building);
+            fixParcelableReferences(room);
+        }
+    }
+
+    public static void fixParcelableReferences(Room room) {
+        for(Reservation reservation : room.getReservations()) {
+            reservation.setRoom(room);
+        }
     }
 
 }

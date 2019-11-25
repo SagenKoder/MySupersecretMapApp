@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
+import app.sagen.mysupersecretmapapp.R;
 import app.sagen.mysupersecretmapapp.data.Room;
+import app.sagen.mysupersecretmapapp.util.Util;
 
 public class RoomListAdapter extends BaseAdapter {
 
@@ -35,12 +38,24 @@ public class RoomListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent) {
 
-        if(convertView == null) {
-            // todo: inflate view
+        if(view == null) { // opprett ny om ikke gjennvunnet
+            view = context.getLayoutInflater().inflate(R.layout.listitem_room, parent, false);
         }
 
-        return null;
+        TextView roomName = view.findViewById(R.id.listitem_room_name);
+        TextView roomDesc = view.findViewById(R.id.listitem_room_description);
+        TextView roomBuilding = view.findViewById(R.id.listitem_room_building);
+        TextView roomReservations = view.findViewById(R.id.listitem_room_reservations_today);
+
+        Room room = getItem(position);
+
+        roomName.setText(room.getName());
+        roomDesc.setText(room.getDescription());
+        roomBuilding.setText(room.getBuilding().getName());
+        roomReservations.setText(String.valueOf(Util.getAllReservationsToday(room).size()));
+
+        return view;
     }
 }

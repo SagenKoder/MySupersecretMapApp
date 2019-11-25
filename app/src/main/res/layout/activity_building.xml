@@ -22,4 +22,21 @@
 
     <include layout="@layout/content_building" />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:src="@drawable/ic_add_circle_outline_white_24dp"
+        app:icon="@drawable/ic_add_circle_outline_white_24dp"
+        app:fabSize="normal"
+        android:text="Opprett ny booking"
+        app:rippleColor="#fff"
+        android:focusable="true"
+        app:elevation="8dp"
+        android:clickable="true"
+        android:layout_marginStart="@dimen/standard_23"
+        android:layout_marginEnd="@dimen/standard_23"
+        android:layout_marginBottom="@dimen/fab_margin" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

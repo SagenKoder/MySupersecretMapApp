@@ -46,7 +46,6 @@ public class Reservation implements Parcelable {
 
     protected Reservation(Parcel in) {
         id = in.readInt();
-        room = in.readParcelable(Room.class.getClassLoader());
         durationInSeconds = in.readInt();
         from = new Date(in.readLong());
         to = new Date(in.readLong());
@@ -91,7 +90,6 @@ public class Reservation implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeParcelable(room, flags);
         dest.writeInt(durationInSeconds);
         dest.writeLong(from.getTime());
         dest.writeLong(to.getTime());

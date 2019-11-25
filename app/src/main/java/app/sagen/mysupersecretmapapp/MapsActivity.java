@@ -329,12 +329,8 @@ public class MapsActivity extends FragmentActivity implements
         fabLayout1.animate().translationY(0);
         fabLayout2.animate().translationY(0);
         fabLayout3.animate().translationY(0).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
+            @Override public void onAnimationStart(Animator animation) { }
+            @Override public void onAnimationEnd(Animator animation) {
                 if (!fabExtended) {
                     fabLayout1.setVisibility(View.GONE);
                     fabLayout2.setVisibility(View.GONE);
@@ -342,14 +338,8 @@ public class MapsActivity extends FragmentActivity implements
                     googleMap.getUiSettings().setZoomControlsEnabled(true);
                 }
             }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
+            @Override public void onAnimationCancel(Animator animation) { }
+            @Override public void onAnimationRepeat(Animator animation) { }
         });
 
         fab.extend();
