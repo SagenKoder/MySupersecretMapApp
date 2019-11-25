@@ -125,8 +125,9 @@ public class MapsActivity extends FragmentActivity implements
 
                     selectedBuildingMarker = null;
 
-                    Intent intent = new Intent();
-                    intent.putExtra("MyBuilding", building);
+                    Intent intent = new Intent(MapsActivity.this, BuildingActivity.class);
+                    intent.putExtra(Building.class.getName(), building);
+                    startActivity(intent);
 
                 } else if (selectedLocationMarker != null) { // manage new location mode
                     fab.setText(getString(R.string.opprett_nytt_rom));

@@ -103,6 +103,10 @@ public class Building implements Parcelable {
         this.geolng = (float) latLng.longitude;
     }
 
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
     public LatLng getLatLng() {
         return new LatLng(geolat, geolng);
     }
