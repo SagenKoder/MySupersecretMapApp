@@ -7,4 +7,5 @@
     <string name="reservasjoner_idag">Reservasjoner idag: </string>
     <string name="bygg">Bygg: </string>
     <string name="title_activity_create_room">CreateRoomActivity</string>
+    <string name="title_activity_room">RoomActivity</string>
 </resources>

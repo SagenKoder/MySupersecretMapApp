@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import app.sagen.mysupersecretmapapp.adapter.RoomListAdapter;
@@ -18,7 +20,7 @@ import app.sagen.mysupersecretmapapp.data.Building;
 import app.sagen.mysupersecretmapapp.data.Room;
 import app.sagen.mysupersecretmapapp.util.Utils;
 
-public class BuildingActivity extends AppCompatActivity {
+public class BuildingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private static final String TAG = "BuildingActivity";
 
@@ -46,6 +48,7 @@ public class BuildingActivity extends AppCompatActivity {
 
         roomListAdapter = new RoomListAdapter(this, building.getRooms());
         listView.setAdapter(roomListAdapter);
+        listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -82,5 +85,14 @@ public class BuildingActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Room room = roomListAdapter.getItem(position);
+
+        Intent intent = new Intent(this, RoomActivity.class);
+        intent.putExtra(Room.class.getName(), room);
+        startActivity(intent);
     }
 }
