@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".CreateReservationActivity"
     tools:showIn="@layout/activity_create_reservation">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/create_reservation_show_datepicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Velg dato"/>
+
+    <Button
+        android:id="@+id/create_reservation_show_timefrompicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Velg tid fra"/>
+
+    <Button
+        android:id="@+id/create_reservation_show_timetopicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Velg tid to"/>
+
+</LinearLayout>

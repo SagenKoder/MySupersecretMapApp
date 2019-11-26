@@ -15,7 +15,7 @@ import java.util.Objects;
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     public interface DatePickerCallback {
-        void onDatePicked(TimePicker view, int year, int month, int day);
+        void onDatePicked(DatePicker view, int year, int month, int day);
     }
 
     private DatePickerCallback datePickerCallback;
@@ -39,7 +39,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
+        datePickerCallback.onDatePicked(view, year, month, dayOfMonth);
     }
 
     /* todo:
