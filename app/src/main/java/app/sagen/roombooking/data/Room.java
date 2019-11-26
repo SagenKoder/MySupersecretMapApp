@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp.data;
+package app.sagen.roombooking.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

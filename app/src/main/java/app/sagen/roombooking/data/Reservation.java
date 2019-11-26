@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp.data;
+package app.sagen.roombooking.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-import app.sagen.mysupersecretmapapp.util.Utils;
+import app.sagen.roombooking.util.Utils;
 
 public class Reservation implements Parcelable {
 

@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp;
+package app.sagen.roombooking;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +15,10 @@ import androidx.fragment.app.DialogFragment;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-import app.sagen.mysupersecretmapapp.data.Building;
-import app.sagen.mysupersecretmapapp.util.DatePickerFragment;
-import app.sagen.mysupersecretmapapp.util.TimePickerFragment;
-import app.sagen.mysupersecretmapapp.util.Utils;
+import app.sagen.roombooking.data.Building;
+import app.sagen.roombooking.util.DatePickerFragment;
+import app.sagen.roombooking.util.TimePickerFragment;
+import app.sagen.roombooking.util.Utils;
 
 public class CreateReservationActivity extends AppCompatActivity {
 

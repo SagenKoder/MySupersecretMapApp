@@ -1,10 +1,9 @@
-package app.sagen.mysupersecretmapapp.util;
+package app.sagen.roombooking.util;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

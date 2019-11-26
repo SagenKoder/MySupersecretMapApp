@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="app.sagen.mysupersecretmapapp">
+    package="app.sagen.roombooking">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -19,23 +19,23 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute">
         <activity
-            android:name=".CreateReservationActivity"
+            android:name="app.sagen.roombooking.CreateReservationActivity"
             android:label="@string/title_activity_create_reservation"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".RoomActivity"
+            android:name="app.sagen.roombooking.RoomActivity"
             android:label="@string/title_activity_room"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CreateRoomActivity"
+            android:name="app.sagen.roombooking.CreateRoomActivity"
             android:label="@string/title_activity_create_room"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BuildingActivity"
+            android:name="app.sagen.roombooking.BuildingActivity"
             android:label="@string/title_activity_building"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CreateBuildingActivity"
+            android:name="app.sagen.roombooking.CreateBuildingActivity"
             android:label="@string/title_activity_create_building"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -44,7 +44,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="app.sagen.roombooking.MapsActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp;
+package app.sagen.roombooking;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +13,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-import app.sagen.mysupersecretmapapp.data.Building;
-import app.sagen.mysupersecretmapapp.data.Reservation;
-import app.sagen.mysupersecretmapapp.data.Room;
-import app.sagen.mysupersecretmapapp.task.CreateRoomTask;
-import app.sagen.mysupersecretmapapp.util.Utils;
+import app.sagen.roombooking.data.Building;
+import app.sagen.roombooking.data.Reservation;
+import app.sagen.roombooking.data.Room;
+import app.sagen.roombooking.task.CreateRoomTask;
+import app.sagen.roombooking.util.Utils;
 
 public class CreateRoomActivity extends AppCompatActivity implements CreateRoomTask.CreateRoomCallback {
 

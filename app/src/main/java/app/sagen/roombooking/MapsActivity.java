@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp;
+package app.sagen.roombooking;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -46,10 +46,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import app.sagen.mysupersecretmapapp.data.Building;
-import app.sagen.mysupersecretmapapp.data.LatLngResult;
-import app.sagen.mysupersecretmapapp.task.FetchDataTask;
-import app.sagen.mysupersecretmapapp.task.LatLngFromAddressTask;
+import app.sagen.roombooking.data.Building;
+import app.sagen.roombooking.data.LatLngResult;
+import app.sagen.roombooking.task.FetchDataTask;
+import app.sagen.roombooking.task.LatLngFromAddressTask;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,

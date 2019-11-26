@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp.util;
+package app.sagen.roombooking.util;
 
 import android.text.format.DateUtils;
 
@@ -19,9 +19,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import app.sagen.mysupersecretmapapp.data.Building;
-import app.sagen.mysupersecretmapapp.data.Reservation;
-import app.sagen.mysupersecretmapapp.data.Room;
+import app.sagen.roombooking.data.Building;
+import app.sagen.roombooking.data.Reservation;
+import app.sagen.roombooking.data.Room;
 
 public class Utils {
 

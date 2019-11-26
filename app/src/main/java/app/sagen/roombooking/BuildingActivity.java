@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp;
+package app.sagen.roombooking;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,10 +15,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-import app.sagen.mysupersecretmapapp.adapter.RoomListAdapter;
-import app.sagen.mysupersecretmapapp.data.Building;
-import app.sagen.mysupersecretmapapp.data.Room;
-import app.sagen.mysupersecretmapapp.util.Utils;
+import app.sagen.roombooking.adapter.RoomListAdapter;
+import app.sagen.roombooking.data.Building;
+import app.sagen.roombooking.data.Room;
+import app.sagen.roombooking.util.Utils;
 
 public class BuildingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 

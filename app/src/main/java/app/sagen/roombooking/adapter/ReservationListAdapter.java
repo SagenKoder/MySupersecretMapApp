@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp.adapter;
+package app.sagen.roombooking.adapter;
 
 import android.app.Activity;
 import android.view.View;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.List;
 
-import app.sagen.mysupersecretmapapp.R;
-import app.sagen.mysupersecretmapapp.data.Reservation;
+import app.sagen.roombooking.R;
+import app.sagen.roombooking.data.Reservation;
 
 public class ReservationListAdapter extends BaseAdapter {
 

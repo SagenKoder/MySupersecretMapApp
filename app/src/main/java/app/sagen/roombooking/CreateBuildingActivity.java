@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp;
+package app.sagen.roombooking;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +12,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Locale;
 
-import app.sagen.mysupersecretmapapp.data.Building;
-import app.sagen.mysupersecretmapapp.task.CreateBuildingTask;
+import app.sagen.roombooking.data.Building;
+import app.sagen.roombooking.task.CreateBuildingTask;
 
 public class CreateBuildingActivity extends AppCompatActivity implements CreateBuildingTask.CreateBuildingCallback {
 

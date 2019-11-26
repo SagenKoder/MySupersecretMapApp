@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp.task;
+package app.sagen.roombooking.task;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -10,8 +10,8 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
-import app.sagen.mysupersecretmapapp.data.LatLngResult;
-import app.sagen.mysupersecretmapapp.util.Utils;
+import app.sagen.roombooking.data.LatLngResult;
+import app.sagen.roombooking.util.Utils;
 
 public class LatLngFromAddressTask extends AsyncTask<String, Void, LatLngResult> {
 

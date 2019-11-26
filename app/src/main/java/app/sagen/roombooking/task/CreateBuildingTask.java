@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp.task;
+package app.sagen.roombooking.task;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Locale;
 
-import app.sagen.mysupersecretmapapp.data.Building;
+import app.sagen.roombooking.data.Building;
 
 public class CreateBuildingTask extends AsyncTask<Building, Void, Void> {
 

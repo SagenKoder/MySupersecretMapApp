@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp;
+package app.sagen.roombooking;
 
 import android.os.Bundle;
 import android.widget.ListView;
@@ -6,9 +6,9 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import app.sagen.mysupersecretmapapp.adapter.ReservationListAdapter;
-import app.sagen.mysupersecretmapapp.data.Room;
-import app.sagen.mysupersecretmapapp.util.Utils;
+import app.sagen.roombooking.adapter.ReservationListAdapter;
+import app.sagen.roombooking.data.Room;
+import app.sagen.roombooking.util.Utils;
 
 public class RoomActivity extends AppCompatActivity {
 

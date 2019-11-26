@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp.task;
+package app.sagen.roombooking.task;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -11,8 +11,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.sagen.mysupersecretmapapp.data.Building;
-import app.sagen.mysupersecretmapapp.util.Utils;
+import app.sagen.roombooking.data.Building;
+import app.sagen.roombooking.util.Utils;
 
 public class FetchDataTask extends AsyncTask<Void, Void, List<Building>> {
 

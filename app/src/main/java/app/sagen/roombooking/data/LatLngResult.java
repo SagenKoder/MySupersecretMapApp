@@ -1,4 +1,4 @@
-package app.sagen.mysupersecretmapapp.data;
+package app.sagen.roombooking.data;
 
 import com.google.android.gms.maps.model.LatLng;
 
