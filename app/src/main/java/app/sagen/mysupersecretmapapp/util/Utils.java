@@ -108,4 +108,11 @@ public class Utils {
         return string.replaceAll("\\s", "%20");
     }
 
+    public static int compareTime(int hour, int minute, int compHour, int compMinute) {
+        int resHour = Integer.compare(hour, compHour);
+        if(resHour != 0) return resHour;
+
+        return Integer.compare(minute, compMinute);
+    }
+
 }

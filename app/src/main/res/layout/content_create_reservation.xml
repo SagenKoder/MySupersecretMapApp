@@ -9,17 +9,41 @@
     tools:context=".CreateReservationActivity"
     tools:showIn="@layout/activity_create_reservation">
 
+    <EditText
+        android:id="@+id/create_reservation_selected_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:enabled="false"
+        android:backgroundTint="@color/colorPrimary" />
+
     <Button
         android:id="@+id/create_reservation_show_datepicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Velg dato"/>
 
+    <EditText
+        android:id="@+id/create_reservation_selected_time_from"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:enabled="false"
+        android:backgroundTint="@color/colorPrimary" />
+
     <Button
         android:id="@+id/create_reservation_show_timefrompicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Velg tid fra"/>
+
+    <EditText
+        android:id="@+id/create_reservation_selected_time_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:enabled="false"
+        android:backgroundTint="@color/colorPrimary" />
 
     <Button
         android:id="@+id/create_reservation_show_timetopicker"
