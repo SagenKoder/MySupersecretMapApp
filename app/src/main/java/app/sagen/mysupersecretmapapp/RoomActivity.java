@@ -1,18 +1,12 @@
 package app.sagen.mysupersecretmapapp;
 
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
-import android.widget.ListView;
-
 import app.sagen.mysupersecretmapapp.adapter.ReservationListAdapter;
-import app.sagen.mysupersecretmapapp.data.Building;
 import app.sagen.mysupersecretmapapp.data.Room;
 import app.sagen.mysupersecretmapapp.util.Utils;
 

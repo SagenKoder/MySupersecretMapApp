@@ -460,7 +460,7 @@ public class MapsActivity extends FragmentActivity implements
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(building.getLatLng())
                     .title(building.getName())
-                    .snippet(building.getLatLng().toString());
+                    .snippet(building.getRooms().size() + " rom");
             Marker marker = googleMap.addMarker(markerOptions);
             marker.setTag(building);
             markers.put(building, marker);

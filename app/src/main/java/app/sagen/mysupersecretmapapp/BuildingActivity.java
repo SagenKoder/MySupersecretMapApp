@@ -2,18 +2,18 @@ package app.sagen.mysupersecretmapapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import app.sagen.mysupersecretmapapp.adapter.RoomListAdapter;
 import app.sagen.mysupersecretmapapp.data.Building;
@@ -45,6 +45,14 @@ public class BuildingActivity extends AppCompatActivity implements AdapterView.O
         setTitle(building.getName());
 
         listView = findViewById(R.id.list_view);
+        ExtendedFloatingActionButton fabCreate = findViewById(R.id.fab_create_reservation);
+        fabCreate.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                Intent intent = new Intent(BuildingActivity.this, CreateReservationActivity.class);
+                intent.putExtra(Building.class.getName(), building);
+                startActivityForResult(intent, Utils.CREATE_RESERVATION_REQUEST_CODE);
+            }
+        });
 
         roomListAdapter = new RoomListAdapter(this, building.getRooms());
         listView.setAdapter(roomListAdapter);

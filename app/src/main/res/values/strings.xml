@@ -8,4 +8,5 @@
     <string name="bygg">Bygg: </string>
     <string name="title_activity_create_room">CreateRoomActivity</string>
     <string name="title_activity_room">RoomActivity</string>
+    <string name="title_activity_create_reservation">CreateReservation</string>
 </resources>

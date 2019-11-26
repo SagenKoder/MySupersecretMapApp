@@ -46,10 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             app:srcCompat="@drawable/ic_add_location_white_24dp"
-            app:rippleColor="#fff"
-            android:focusable="true"
-            app:elevation="8dp"
-            android:clickable="true"
             app:fabSize="mini" />
 
     </LinearLayout>
@@ -79,10 +75,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             app:srcCompat="@drawable/ic_gps_fixed_white_24dp"
-            app:rippleColor="#fff"
-            android:focusable="true"
-            app:elevation="8dp"
-            android:clickable="true"
             app:fabSize="mini" />
 
     </LinearLayout>
@@ -112,10 +104,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             app:srcCompat="@drawable/ic_domain_white_24dp"
-            app:rippleColor="#fff"
-            android:focusable="true"
-            app:elevation="8dp"
-            android:clickable="true"
             app:fabSize="mini" />
 
     </LinearLayout>
@@ -129,10 +117,6 @@
         app:icon="@drawable/ic_add_circle_outline_white_24dp"
         app:fabSize="normal"
         android:text="@string/opprett_nytt_rom"
-        app:rippleColor="#fff"
-        android:focusable="true"
-        app:elevation="8dp"
-        android:clickable="true"
         android:layout_marginStart="@dimen/standard_23"
         android:layout_marginEnd="@dimen/standard_23"
         android:layout_marginBottom="@dimen/fab_margin" />

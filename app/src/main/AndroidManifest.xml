@@ -19,9 +19,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute">
         <activity
+            android:name=".CreateReservationActivity"
+            android:label="@string/title_activity_create_reservation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".RoomActivity"
             android:label="@string/title_activity_room"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreateRoomActivity"
             android:label="@string/title_activity_create_room"

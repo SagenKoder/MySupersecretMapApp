@@ -26,6 +26,7 @@ import app.sagen.mysupersecretmapapp.data.Room;
 public class Utils {
 
     public static final int CREATE_ROOM_REQUEST_CODE = 20;
+    public static final int CREATE_RESERVATION_REQUEST_CODE = 30;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 

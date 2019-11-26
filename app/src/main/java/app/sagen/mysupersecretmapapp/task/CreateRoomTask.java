@@ -5,9 +5,7 @@ import android.util.Log;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Locale;
 
-import app.sagen.mysupersecretmapapp.data.Building;
 import app.sagen.mysupersecretmapapp.data.Room;
 import app.sagen.mysupersecretmapapp.util.Utils;
 
