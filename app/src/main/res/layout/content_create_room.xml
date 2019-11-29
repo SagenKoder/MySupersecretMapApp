@@ -36,6 +36,6 @@
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:hint="Forelesningssal med 200 plasser"
-        android:backgroundTint="@color/colorPrimary"/>
+        android:backgroundTint="@color/colorPrimary" />
 
 </LinearLayout>

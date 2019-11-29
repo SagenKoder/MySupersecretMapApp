@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +19,7 @@
         <activity
             android:name="app.sagen.roombooking.CreateReservationActivity"
             android:label="@string/title_activity_create_reservation"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="app.sagen.roombooking.RoomActivity"
             android:label="@string/title_activity_room"
@@ -44,7 +42,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="app.sagen.roombooking.MapsActivity"
+            android:name="app.sagen.roombooking.MainActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -45,7 +45,7 @@ public class RoomListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
-        if(view == null) { // opprett ny om ikke gjennvunnet
+        if (view == null) { // opprett ny om ikke gjennvunnet
             view = context.getLayoutInflater().inflate(R.layout.listitem_room, parent, false);
         }
 

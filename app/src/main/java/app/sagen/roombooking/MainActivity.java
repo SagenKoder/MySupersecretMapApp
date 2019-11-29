@@ -51,7 +51,7 @@ import app.sagen.roombooking.data.LatLngResult;
 import app.sagen.roombooking.task.FetchDataTask;
 import app.sagen.roombooking.task.LatLngFromAddressTask;
 
-public class MapsActivity extends FragmentActivity implements
+public class MainActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -62,29 +62,26 @@ public class MapsActivity extends FragmentActivity implements
         GoogleMap.OnMarkerDragListener,
         GoogleMap.OnMapClickListener {
 
-    private static final String TAG = "MapsActivity";
+    private static final String TAG = "MainActivity";
 
     private GoogleMap googleMap;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Location lastLocation;
 
-    ExtendedFloatingActionButton fab;
-    FloatingActionButton fab1;
-    FloatingActionButton fab2;
-    FloatingActionButton fab3;
-    LinearLayout fabLayout1;
-    LinearLayout fabLayout2;
-    LinearLayout fabLayout3;
-    View fabBackground;
+    private ExtendedFloatingActionButton fab;
+    private LinearLayout fabLayout1;
+    private LinearLayout fabLayout2;
+    private LinearLayout fabLayout3;
+    private View fabBackground;
 
     private boolean fabExtended = false;
     private boolean setSelectedMarkerMode = false;
 
     private Map<Building, Marker> markers = new HashMap<>();
 
-    Marker selectedLocationMarker = null;
-    Marker selectedBuildingMarker = null;
+    private Marker selectedLocationMarker = null;
+    private Marker selectedBuildingMarker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +103,9 @@ public class MapsActivity extends FragmentActivity implements
                 .setFastestInterval(1000);
 
         fab = findViewById(R.id.fab);
-        fab1 = findViewById(R.id.fab1);
-        fab2 = findViewById(R.id.fab2);
-        fab3 = findViewById(R.id.fab3);
+        FloatingActionButton fab1 = findViewById(R.id.fab1);
+        FloatingActionButton fab2 = findViewById(R.id.fab2);
+        FloatingActionButton fab3 = findViewById(R.id.fab3);
         fabLayout1 = findViewById(R.id.fabLayout1);
         fabLayout2 = findViewById(R.id.fabLayout2);
         fabLayout3 = findViewById(R.id.fabLayout3);
@@ -117,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedBuildingMarker != null) { // manage building mode
+                if (selectedBuildingMarker != null) { // manage building mode
                     fab.setText(getString(R.string.opprett_nytt_rom));
                     fab.setIcon(getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
 
@@ -125,7 +122,7 @@ public class MapsActivity extends FragmentActivity implements
 
                     selectedBuildingMarker = null;
 
-                    Intent intent = new Intent(MapsActivity.this, BuildingActivity.class);
+                    Intent intent = new Intent(MainActivity.this, BuildingActivity.class);
                     intent.putExtra(Building.class.getName(), building);
                     startActivity(intent);
 
@@ -138,14 +135,14 @@ public class MapsActivity extends FragmentActivity implements
                     selectedLocationMarker.remove();
                     selectedLocationMarker = null;
 
-                    AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this)
+                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
                             .setMessage("Vil du opprette ett nytt bygg her?")
                             .setTitle("Opprette nytt bygg")
                             .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    Intent intent = new Intent(MapsActivity.this, CreateBuildingActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, CreateBuildingActivity.class);
                                     intent.putExtra("app.dagen.mysupersecretmapapp.location.lat", markerPosition.latitude);
                                     intent.putExtra("app.dagen.mysupersecretmapapp.location.lng", markerPosition.longitude);
                                     startActivity(intent);
@@ -176,7 +173,7 @@ public class MapsActivity extends FragmentActivity implements
             public void onClick(View v) {
                 closeMenu();
 
-                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this)
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
                         .setMessage("Trykk på kartet for å plassere en markør der du vil legge til et bygg")
                         .setTitle("Sett markøren")
                         .setNeutralButton("Ok", null)
@@ -207,7 +204,7 @@ public class MapsActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 View bottomDialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MapsActivity.this);
+                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this);
                 bottomSheetDialog.setContentView(bottomDialogView);
                 bottomSheetDialog.show();
 
@@ -225,7 +222,7 @@ public class MapsActivity extends FragmentActivity implements
 
                         LatLngFromAddressTask latLngFromAddressTask = new LatLngFromAddressTask(
                                 getString(R.string.google_maps_key),
-                                MapsActivity.this);
+                                MainActivity.this);
                         latLngFromAddressTask.execute(searchForAddress.getText().toString());
                     }
                 });
@@ -267,7 +264,7 @@ public class MapsActivity extends FragmentActivity implements
         GoogleMap.CancelableCallback cancelableCallback = new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
-                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this)
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
                         .setMessage("Trykk og hold markøren for å flytte den rundt. Klikk 'Ferdig' når du har den der du vil.")
                         .setTitle("Flytte markøren")
                         .setNeutralButton("Ok", null)
@@ -278,7 +275,7 @@ public class MapsActivity extends FragmentActivity implements
 
             @Override
             public void onCancel() {
-                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this)
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
                         .setMessage("Trykk og hold markøren for å flytte den rundt. Klikk 'Ferdig' når du har den der du vil.")
                         .setTitle("Flytte markøren")
                         .setNeutralButton("Ok", null)
@@ -329,8 +326,12 @@ public class MapsActivity extends FragmentActivity implements
         fabLayout1.animate().translationY(0);
         fabLayout2.animate().translationY(0);
         fabLayout3.animate().translationY(0).setListener(new Animator.AnimatorListener() {
-            @Override public void onAnimationStart(Animator animation) { }
-            @Override public void onAnimationEnd(Animator animation) {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
                 if (!fabExtended) {
                     fabLayout1.setVisibility(View.GONE);
                     fabLayout2.setVisibility(View.GONE);
@@ -338,8 +339,14 @@ public class MapsActivity extends FragmentActivity implements
                     googleMap.getUiSettings().setZoomControlsEnabled(true);
                 }
             }
-            @Override public void onAnimationCancel(Animator animation) { }
-            @Override public void onAnimationRepeat(Animator animation) { }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
 
         fab.extend();
@@ -353,7 +360,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapClick(LatLng latLng) {
-        if(selectedBuildingMarker != null) {
+        if (selectedBuildingMarker != null) {
             fab.setText(getString(R.string.opprett_nytt_rom));
             fab.setIcon(getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
             selectedBuildingMarker = null;
@@ -490,7 +497,7 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-        if(marker.getTag() instanceof Building) {
+        if (marker.getTag() instanceof Building) {
 
             selectedBuildingMarker = marker;
 

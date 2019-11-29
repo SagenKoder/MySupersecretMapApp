@@ -12,9 +12,8 @@ import app.sagen.roombooking.util.Utils;
 
 public class RoomActivity extends AppCompatActivity {
 
-    Room room;
-    ListView listView;
-    ReservationListAdapter reservationListAdapter;
+    private Room room;
+    private ReservationListAdapter reservationListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +23,14 @@ public class RoomActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         room = getIntent().getParcelableExtra(Room.class.getName());
-        if(room == null) {
+        if (room == null) {
             throw new RuntimeException("Could not get room from intent!");
         }
         Utils.fixParcelableReferences(room);
 
         setTitle("Reservasjoner på rom " + room.getName() + " idag");
 
-        listView = findViewById(R.id.list_view);
+        ListView listView = findViewById(R.id.list_view);
 
         reservationListAdapter = new ReservationListAdapter(this, Utils.getAllReservationsToday(room));
         listView.setAdapter(reservationListAdapter);

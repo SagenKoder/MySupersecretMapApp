@@ -17,10 +17,8 @@ import app.sagen.roombooking.task.CreateBuildingTask;
 
 public class CreateBuildingActivity extends AppCompatActivity implements CreateBuildingTask.CreateBuildingCallback {
 
-    ExtendedFloatingActionButton fabCreate;
-    EditText nameField;
-    EditText locationFieldLat;
-    EditText locationFieldLng;
+    private ExtendedFloatingActionButton fabCreate;
+    private EditText nameField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +29,8 @@ public class CreateBuildingActivity extends AppCompatActivity implements CreateB
 
         fabCreate = findViewById(R.id.fab_create_building);
         nameField = findViewById(R.id.name_field);
-        locationFieldLat = findViewById(R.id.location_field_lat);
-        locationFieldLng = findViewById(R.id.location_field_lng);
+        EditText locationFieldLat = findViewById(R.id.location_field_lat);
+        EditText locationFieldLng = findViewById(R.id.location_field_lng);
 
         final float lat = (float) getIntent().getDoubleExtra("app.dagen.mysupersecretmapapp.location.lat", 0);
         final float lng = (float) getIntent().getDoubleExtra("app.dagen.mysupersecretmapapp.location.lng", 0);

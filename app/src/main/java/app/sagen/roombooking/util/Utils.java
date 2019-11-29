@@ -77,8 +77,8 @@ public class Utils {
 
     public static List<Reservation> getAllReservationsToday(Room room) {
         List<Reservation> reservations = new ArrayList<>();
-        for(Reservation reservation : room.getReservations()) {
-            if(DateUtils.isToday(reservation.getFrom().getTime())) {
+        for (Reservation reservation : room.getReservations()) {
+            if (DateUtils.isToday(reservation.getFrom().getTime())) {
                 reservations.add(reservation);
             }
         }
@@ -86,20 +86,20 @@ public class Utils {
     }
 
     public static void fixParcelableReferences(List<Building> buildings) {
-        for(Building building : buildings) {
+        for (Building building : buildings) {
             fixParcelableReferences(building);
         }
     }
 
     public static void fixParcelableReferences(Building building) {
-        for(Room room : building.getRooms()) {
+        for (Room room : building.getRooms()) {
             room.setBuilding(building);
             fixParcelableReferences(room);
         }
     }
 
     public static void fixParcelableReferences(Room room) {
-        for(Reservation reservation : room.getReservations()) {
+        for (Reservation reservation : room.getReservations()) {
             reservation.setRoom(room);
         }
     }
@@ -110,7 +110,7 @@ public class Utils {
 
     public static int compareTime(int hour, int minute, int compHour, int compMinute) {
         int resHour = Integer.compare(hour, compHour);
-        if(resHour != 0) return resHour;
+        if (resHour != 0) return resHour;
 
         return Integer.compare(minute, compMinute);
     }

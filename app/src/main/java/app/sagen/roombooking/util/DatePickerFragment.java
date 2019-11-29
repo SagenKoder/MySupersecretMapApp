@@ -40,9 +40,4 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         datePickerCallback.onDatePicked(view, year, month, dayOfMonth);
     }
-
-    /* todo:
-    DialogFragment newFragment = new TimePickerFragment();
-    newFragment.show(getSupportFragmentManager(), "timePicker");
-     */
 }

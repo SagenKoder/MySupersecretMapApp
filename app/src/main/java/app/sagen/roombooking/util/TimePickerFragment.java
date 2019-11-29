@@ -37,9 +37,4 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         timePickerCallback.onTimePicked(view, hourOfDay, minute);
     }
-
-    /* todo:
-    DialogFragment newFragment = new TimePickerFragment();
-    newFragment.show(getSupportFragmentManager(), "timePicker");
-     */
 }

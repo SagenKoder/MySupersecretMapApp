@@ -24,9 +24,8 @@ public class BuildingActivity extends AppCompatActivity implements AdapterView.O
 
     private static final String TAG = "BuildingActivity";
 
-    Building building;
-    ListView listView;
-    RoomListAdapter roomListAdapter;
+    private Building building;
+    private RoomListAdapter roomListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +36,18 @@ public class BuildingActivity extends AppCompatActivity implements AdapterView.O
         setSupportActionBar(toolbar);
 
         building = getIntent().getParcelableExtra(Building.class.getName());
-        if(building == null) {
+        if (building == null) {
             throw new RuntimeException("Could not get building from intent!");
         }
         Utils.fixParcelableReferences(building);
 
         setTitle(building.getName());
 
-        listView = findViewById(R.id.list_view);
+        ListView listView = findViewById(R.id.list_view);
         ExtendedFloatingActionButton fabCreate = findViewById(R.id.fab_create_reservation);
         fabCreate.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(BuildingActivity.this, CreateReservationActivity.class);
                 intent.putExtra(Building.class.getName(), building);
                 startActivityForResult(intent, Utils.CREATE_RESERVATION_REQUEST_CODE);
@@ -72,7 +72,7 @@ public class BuildingActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.building_menu_addroom) {
+        if (item.getItemId() == R.id.building_menu_addroom) {
             Intent intent = new Intent(this, CreateRoomActivity.class);
             intent.putExtra(Building.class.getName(), building);
             startActivityForResult(intent, 20);
@@ -82,10 +82,10 @@ public class BuildingActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == Utils.CREATE_ROOM_REQUEST_CODE) {
-            if(resultCode == RESULT_OK && data != null) {
+        if (requestCode == Utils.CREATE_ROOM_REQUEST_CODE) {
+            if (resultCode == RESULT_OK && data != null) {
                 Room room = data.getParcelableExtra(Room.class.getName());
-                if(room != null) {
+                if (room != null) {
                     Utils.fixParcelableReferences(room);
                     room.setBuilding(building);
                     roomListAdapter.addItem(room);

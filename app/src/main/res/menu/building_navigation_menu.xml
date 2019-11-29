@@ -6,6 +6,6 @@
         android:id="@+id/building_menu_addroom"
         android:title="Add room"
         android:icon="@drawable/ic_create_white_24dp"
-        app:showAsAction="always|withText"/>
+        app:showAsAction="always|withText" />
 
 </menu>

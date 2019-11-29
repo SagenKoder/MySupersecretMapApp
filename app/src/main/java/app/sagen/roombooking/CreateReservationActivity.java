@@ -23,15 +23,9 @@ import app.sagen.roombooking.util.Utils;
 public class CreateReservationActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateReservationActivi";
-    
-    private Building building;
 
     private DateFormat dateFormat;
     private DateFormat timeFormat;
-
-    private Button selectDateButton;
-    private Button selectTimeFromButton;
-    private Button selectTimeToButton;
 
     private EditText selectDateText;
     private EditText selectTimeFromText;
@@ -85,8 +79,8 @@ public class CreateReservationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        building = getIntent().getParcelableExtra(Building.class.getName());
-        if(building == null) {
+        Building building = getIntent().getParcelableExtra(Building.class.getName());
+        if (building == null) {
             throw new RuntimeException("Could not get building from intent!");
         }
         Utils.fixParcelableReferences(building);
@@ -111,16 +105,17 @@ public class CreateReservationActivity extends AppCompatActivity {
         selectedToHour = calendar.get(Calendar.HOUR_OF_DAY);
         selectedToMinute = calendar.get(Calendar.MINUTE);
 
-        selectDateButton = findViewById(R.id.create_reservation_show_datepicker);
-        selectTimeFromButton = findViewById(R.id.create_reservation_show_timefrompicker);
-        selectTimeToButton = findViewById(R.id.create_reservation_show_timetopicker);
+        Button selectDateButton = findViewById(R.id.create_reservation_show_datepicker);
+        Button selectTimeFromButton = findViewById(R.id.create_reservation_show_timefrompicker);
+        Button selectTimeToButton = findViewById(R.id.create_reservation_show_timetopicker);
 
         selectDateText = findViewById(R.id.create_reservation_selected_date);
         selectTimeFromText = findViewById(R.id.create_reservation_selected_time_from);
         selectTimeToText = findViewById(R.id.create_reservation_selected_time_to);
 
         selectDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 DialogFragment datePickerFragment = new DatePickerFragment(
                         calendar.get(Calendar.YEAR),
@@ -133,7 +128,8 @@ public class CreateReservationActivity extends AppCompatActivity {
         });
 
         selectTimeFromButton.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 DialogFragment timePickerFragment = new TimePickerFragment(
                         calendar.get(Calendar.HOUR_OF_DAY),
@@ -179,7 +175,7 @@ public class CreateReservationActivity extends AppCompatActivity {
     }
 
     private void validateAndSetStartTime(int hour, int minute) {
-        if(Utils.compareTime(hour, minute, 23, 0) > 0) { // if after 23:00, set to 23:00
+        if (Utils.compareTime(hour, minute, 23, 0) > 0) { // if after 23:00, set to 23:00
             hour = 23;
             minute = 0;
         }
@@ -189,7 +185,7 @@ public class CreateReservationActivity extends AppCompatActivity {
     }
 
     private void validateAndSetEndTime(int hour, int minute) {
-        if(Utils.compareTime(hour, minute, selectedFromHour, selectedToMinute) < 0) { // is before start time - set to an hour after start time
+        if (Utils.compareTime(hour, minute, selectedFromHour, selectedToMinute) < 0) { // is before start time - set to an hour after start time
             selectedToHour = selectedFromHour;
             selectedToMinute = selectedFromMinute + 59;
         }

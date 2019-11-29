@@ -53,7 +53,7 @@ public class ReservationListAdapter extends BaseAdapter {
 
         Reservation reservation = getItem(position);
 
-        if(view == null) { // opprett ny om ikke gjennvunnet
+        if (view == null) { // opprett ny om ikke gjennvunnet
             view = context.getLayoutInflater().inflate(R.layout.listitem_reservation, parent, false);
         }
 

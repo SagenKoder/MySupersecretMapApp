@@ -21,11 +21,11 @@ import app.sagen.roombooking.util.Utils;
 
 public class CreateRoomActivity extends AppCompatActivity implements CreateRoomTask.CreateRoomCallback {
 
-    Building building;
+    private Building building;
 
-    ExtendedFloatingActionButton fabCreate;
-    EditText nameField;
-    EditText descField;
+    private ExtendedFloatingActionButton fabCreate;
+    private EditText nameField;
+    private EditText descField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class CreateRoomActivity extends AppCompatActivity implements CreateRoomT
         setSupportActionBar(toolbar);
 
         building = getIntent().getParcelableExtra(Building.class.getName());
-        if(building == null) {
+        if (building == null) {
             throw new RuntimeException("Could not get building from intent!");
         }
         Utils.fixParcelableReferences(building);
