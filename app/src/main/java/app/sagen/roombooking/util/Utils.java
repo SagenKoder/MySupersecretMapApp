@@ -1,6 +1,7 @@
 package app.sagen.roombooking.util;
 
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +26,8 @@ import app.sagen.roombooking.data.Room;
 
 public class Utils {
 
+    private static final String TAG = "Utils";
+    
     public static final int CREATE_ROOM_REQUEST_CODE = 20;
     public static final int CREATE_RESERVATION_REQUEST_CODE = 30;
     public static final int CREATE_ROOM_RESERVATION_REQUEST_CODE = 40;
@@ -124,20 +127,35 @@ public class Utils {
 
         ArrayList<Room> rooms = new ArrayList<>();
 
+        Log.e(TAG, "allAvailableRooms: Rooms=" + rooms + " From=" + from + " To=" + to);
+
+        long from2 = from.getTime();
+        long to2 = to.getTime();
+
         roomLoop:
         for(Room  room : building.getRooms()) {
+            Log.e(TAG, "allAvailableRooms: ");
+            fixParcelableReferences(room);
+            Log.e(TAG, "allAvailableRooms:     Sjekker rom " + room.getName());
             for(Reservation reservation : room.getReservations()) {
-                long startA = reservation.getFrom().getTime();
-                long endA = reservation.getFrom().getTime();
-                long startB = from.getTime();
-                long endB = to.getTime();
+                Log.e(TAG, "allAvailableRooms:         Sjekker reservasjon " + reservation.toString());
+                long from1 = reservation.getFrom().getTime();
+                long to1 = reservation.getTo().getTime();
+
+                Log.e(TAG, "allAvailableRooms:                 StartA\t" + from1);
+                Log.e(TAG, "allAvailableRooms:                 StartB\t" + from2);
+                Log.e(TAG, "allAvailableRooms:                 EndA\t\t" + to1);
+                Log.e(TAG, "allAvailableRooms:                 EndB\t\t" + to2);
 
                 // source: https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
-                if(Math.max(startA, startB) < Math.min(endA, endB)) {
+                if((from1 < to2) && (to1 > from2)) {
                     // room is reserved
+                    Log.e(TAG, "allAvailableRooms:             Overlapping.....");
                     continue roomLoop;
                 }
+                Log.e(TAG, "allAvailableRooms:             Did not overlap.....");
             }
+            Log.e(TAG, "allAvailableRooms:         Room did not overlap");
             rooms.add(room);
         }
 

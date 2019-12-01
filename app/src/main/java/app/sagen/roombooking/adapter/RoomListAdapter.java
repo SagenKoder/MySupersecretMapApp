@@ -67,7 +67,7 @@ public class RoomListAdapter extends BaseAdapter {
 
         if(roomName != null) roomName.setText(room.getName());
         if(roomDesc != null) roomDesc.setText(room.getDescription());
-        if(roomBuilding != null) roomBuilding.setText(room.getBuilding().getName());
+        if(roomBuilding != null && room.getBuilding() != null) roomBuilding.setText(room.getBuilding().getName());
         if(roomReservations != null) roomReservations.setText(String.valueOf(Utils.getAllReservationsToday(room).size()));
 
         return view;

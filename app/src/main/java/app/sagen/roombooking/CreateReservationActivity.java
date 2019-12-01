@@ -21,7 +21,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import app.sagen.roombooking.data.Building;
 import app.sagen.roombooking.data.Reservation;
@@ -202,7 +201,6 @@ public class CreateReservationActivity extends AppCompatActivity {
                         alertDialog.show();
 
                         return;
-
                     }
 
                     Intent intent = new Intent(CreateReservationActivity.this, CreateRoomReservationActivity.class);

@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">MySupersecretMapApp</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="app_name">RoomBooking</string>
+    <string name="title_activity_maps">Kart</string>
     <string name="opprett_nytt_rom">Nytt bygg</string>
     <string name="title_activity_create_building">Opprett et nytt bygg</string>
     <string name="title_activity_building">BuildingActivity</string>
     <string name="reservasjoner_idag">Reservasjoner idag: </string>
     <string name="bygg">Bygg: </string>
-    <string name="title_activity_create_room">CreateRoomActivity</string>
+    <string name="title_activity_create_room">Opprett nytt rom</string>
     <string name="title_activity_room">RoomActivity</string>
-    <string name="title_activity_create_reservation">CreateReservation</string>
-    <string name="title_activity_create_room_reservation">CreateRoomReservationActivity</string>
+    <string name="title_activity_create_reservation">Opprett ny reservasjon</string>
+    <string name="title_activity_create_room_reservation">Opprett ny reservasjon</string>
 </resources>
