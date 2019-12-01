@@ -51,6 +51,10 @@ public class Reservation implements Parcelable {
         to = new Date(in.readLong());
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

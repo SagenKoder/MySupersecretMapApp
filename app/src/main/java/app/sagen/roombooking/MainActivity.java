@@ -473,7 +473,7 @@ public class MainActivity extends FragmentActivity implements
             markers.put(building, marker);
         }
 
-        Log.d(TAG, "buildingCreated: " + markers.keySet());
+        Log.d(TAG, "roomCreated: " + markers.keySet());
     }
 
     @Override

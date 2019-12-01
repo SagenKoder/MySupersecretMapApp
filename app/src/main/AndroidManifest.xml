@@ -17,23 +17,27 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute">
         <activity
-            android:name="app.sagen.roombooking.CreateReservationActivity"
+            android:name=".CreateRoomReservationActivity"
+            android:label="@string/title_activity_create_room_reservation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".CreateReservationActivity"
             android:label="@string/title_activity_create_reservation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.sagen.roombooking.RoomActivity"
+            android:name=".RoomActivity"
             android:label="@string/title_activity_room"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.sagen.roombooking.CreateRoomActivity"
+            android:name=".CreateRoomActivity"
             android:label="@string/title_activity_create_room"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.sagen.roombooking.BuildingActivity"
+            android:name=".BuildingActivity"
             android:label="@string/title_activity_building"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.sagen.roombooking.CreateBuildingActivity"
+            android:name=".CreateBuildingActivity"
             android:label="@string/title_activity_create_building"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -42,7 +46,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="app.sagen.roombooking.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

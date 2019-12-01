@@ -27,6 +27,7 @@ public class Utils {
 
     public static final int CREATE_ROOM_REQUEST_CODE = 20;
     public static final int CREATE_RESERVATION_REQUEST_CODE = 30;
+    public static final int CREATE_ROOM_RESERVATION_REQUEST_CODE = 40;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
@@ -37,6 +38,10 @@ public class Utils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String formatJsonDate(Date stringDate) {
+        return sdf.format(stringDate);
     }
 
     public static String readStringFromStream(InputStream inputStream) throws IOException {
@@ -113,6 +118,30 @@ public class Utils {
         if (resHour != 0) return resHour;
 
         return Integer.compare(minute, compMinute);
+    }
+
+    public static ArrayList<Room> allAvailableRooms(Building building, Date from, Date to) {
+
+        ArrayList<Room> rooms = new ArrayList<>();
+
+        roomLoop:
+        for(Room  room : building.getRooms()) {
+            for(Reservation reservation : room.getReservations()) {
+                long startA = reservation.getFrom().getTime();
+                long endA = reservation.getFrom().getTime();
+                long startB = from.getTime();
+                long endB = to.getTime();
+
+                // source: https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+                if(Math.max(startA, startB) < Math.min(endA, endB)) {
+                    // room is reserved
+                    continue roomLoop;
+                }
+            }
+            rooms.add(room);
+        }
+
+        return rooms;
     }
 
 }

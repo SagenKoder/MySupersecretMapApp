@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 
 import app.sagen.roombooking.adapter.RoomListAdapter;
 import app.sagen.roombooking.data.Building;
+import app.sagen.roombooking.data.Reservation;
 import app.sagen.roombooking.data.Room;
 import app.sagen.roombooking.util.Utils;
 
@@ -89,6 +90,14 @@ public class BuildingActivity extends AppCompatActivity implements AdapterView.O
                     Utils.fixParcelableReferences(room);
                     room.setBuilding(building);
                     roomListAdapter.addItem(room);
+                }
+            }
+        }
+        if (requestCode == Utils.CREATE_ROOM_RESERVATION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK && data != null) {
+                Reservation reservation = data.getParcelableExtra(Reservation.class.getName());
+                if(reservation != null) {
+                    finish(); // return after reservation
                 }
             }
         }

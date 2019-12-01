@@ -69,7 +69,7 @@ public class CreateRoomActivity extends AppCompatActivity implements CreateRoomT
     }
 
     @Override
-    public void buildingCreated(Room room) {
+    public void roomCreated(Room room) {
         Snackbar.make(fabCreate.getRootView(), "Rom opprettet", Snackbar.LENGTH_LONG).show();
 
         Intent intent = new Intent();

@@ -17,9 +17,18 @@ public class RoomListAdapter extends BaseAdapter {
     private Activity context;
     private List<Room> rooms;
 
+    private int layout;
+
     public RoomListAdapter(Activity context, List<Room> rooms) {
         this.context = context;
         this.rooms = rooms;
+        layout = R.layout.listitem_room;
+    }
+
+    public RoomListAdapter(Activity context, List<Room> rooms, int layout) {
+        this.context = context;
+        this.rooms = rooms;
+        this.layout = layout;
     }
 
     public void addItem(Room room) {
@@ -56,10 +65,10 @@ public class RoomListAdapter extends BaseAdapter {
 
         Room room = getItem(position);
 
-        roomName.setText(room.getName());
-        roomDesc.setText(room.getDescription());
-        roomBuilding.setText(room.getBuilding().getName());
-        roomReservations.setText(String.valueOf(Utils.getAllReservationsToday(room).size()));
+        if(roomName != null) roomName.setText(room.getName());
+        if(roomDesc != null) roomDesc.setText(room.getDescription());
+        if(roomBuilding != null) roomBuilding.setText(room.getBuilding().getName());
+        if(roomReservations != null) roomReservations.setText(String.valueOf(Utils.getAllReservationsToday(room).size()));
 
         return view;
     }

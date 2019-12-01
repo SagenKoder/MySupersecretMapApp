@@ -1,5 +1,7 @@
 package app.sagen.roombooking;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,14 +10,22 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import app.sagen.roombooking.data.Building;
+import app.sagen.roombooking.data.Reservation;
+import app.sagen.roombooking.data.Room;
 import app.sagen.roombooking.util.DatePickerFragment;
 import app.sagen.roombooking.util.TimePickerFragment;
 import app.sagen.roombooking.util.Utils;
@@ -45,11 +55,10 @@ public class CreateReservationActivity extends AppCompatActivity {
         @Override
         public void onDatePicked(DatePicker view, int year, int month, int day) {
             // date picked
-            Log.e(TAG, "onDatePicked: y=" + year + " m=" + month + " d=" + day);
+            Log.d(TAG, "onDatePicked: y=" + year + " m=" + month + " d=" + day);
             selectedYear = year;
             selectedMonth = month;
             selectedDay = day;
-
             updateTextFields();
         }
     };
@@ -58,8 +67,10 @@ public class CreateReservationActivity extends AppCompatActivity {
         @Override
         public void onTimePicked(TimePicker view, int hourOfDay, int minute) {
             // time from picked
-            Log.e(TAG, "onTimePicked: from: hour=" + hourOfDay + " minute=" + minute);
-            validateAndSetStartTime(hourOfDay, minute);
+            Log.d(TAG, "onTimePicked: from: hour=" + hourOfDay + " minute=" + minute);
+            selectedFromHour = hourOfDay;
+            selectedFromMinute = minute;
+            updateTextFields();
         }
     };
 
@@ -67,8 +78,10 @@ public class CreateReservationActivity extends AppCompatActivity {
         @Override
         public void onTimePicked(TimePicker view, int hourOfDay, int minute) {
             // time to picked
-            Log.e(TAG, "onTimePicked: to: hour=" + hourOfDay + " minute=" + minute);
-            validateAndSetEndTime(hourOfDay, minute);
+            Log.d(TAG, "onTimePicked: to: hour=" + hourOfDay + " minute=" + minute);
+            selectedToHour = hourOfDay;
+            selectedToMinute = minute;
+            updateTextFields();
         }
     };
 
@@ -79,7 +92,7 @@ public class CreateReservationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Building building = getIntent().getParcelableExtra(Building.class.getName());
+        final Building building = getIntent().getParcelableExtra(Building.class.getName());
         if (building == null) {
             throw new RuntimeException("Could not get building from intent!");
         }
@@ -136,7 +149,7 @@ public class CreateReservationActivity extends AppCompatActivity {
                         calendar.get(Calendar.MINUTE),
                         timePickerCallback_from
                 );
-                timePickerFragment.show(getSupportFragmentManager(), "timePicker");
+                timePickerFragment.show(getSupportFragmentManager(), "timePickerFrom");
             }
         });
 
@@ -149,11 +162,75 @@ public class CreateReservationActivity extends AppCompatActivity {
                         calendar.get(Calendar.MINUTE),
                         timePickerCallback_to
                 );
-                timePickerFragment.show(getSupportFragmentManager(), "timePicker");
+                timePickerFragment.show(getSupportFragmentManager(), "timePickerTo");
+            }
+        });
+
+        ExtendedFloatingActionButton fab = findViewById(R.id.fab_create_reservation);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(validateFields()) {
+                    // todo: find all available rooms
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.YEAR, selectedYear);
+                    calendar.set(Calendar.MONTH, selectedMonth);
+                    calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+                    calendar.set(Calendar.HOUR_OF_DAY, selectedFromHour);
+                    calendar.set(Calendar.MINUTE, selectedFromMinute);
+                    calendar.set(Calendar.SECOND, 0);
+
+                    Date from = calendar.getTime();
+
+                    calendar.set(Calendar.HOUR_OF_DAY, selectedToHour);
+                    calendar.set(Calendar.MINUTE, selectedToMinute);
+
+                    Date to = calendar.getTime();
+
+                    ArrayList<Room> rooms = Utils.allAvailableRooms(building, from, to);
+
+                    if(rooms.size() == 0) {
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(CreateReservationActivity.this)
+                                .setMessage("Ingen ledige rom i denne perioden!")
+                                .setTitle("Ingen ledige rom")
+                                .setNeutralButton("Ok", null)
+                                .setCancelable(true)
+                                .create();
+                        alertDialog.show();
+
+                        return;
+
+                    }
+
+                    Intent intent = new Intent(CreateReservationActivity.this, CreateRoomReservationActivity.class);
+                    intent.putExtra("from", from.getTime());
+                    intent.putExtra("to", to.getTime());
+                    intent.putParcelableArrayListExtra("rooms", rooms);
+                    startActivityForResult(intent, Utils.CREATE_ROOM_RESERVATION_REQUEST_CODE);
+
+                }
             }
         });
 
         updateTextFields();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Utils.CREATE_ROOM_RESERVATION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK && data != null) {
+                Reservation reservation = data.getParcelableExtra(Reservation.class.getName());
+                if(reservation != null) {
+                    setResult(Utils.CREATE_ROOM_RESERVATION_REQUEST_CODE, data);
+                    finish(); // return after reservation
+                }
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void updateTextFields() {
@@ -174,22 +251,23 @@ public class CreateReservationActivity extends AppCompatActivity {
         selectTimeToText.setText(timeFormat.format(calendar.getTime()));
     }
 
-    private void validateAndSetStartTime(int hour, int minute) {
-        if (Utils.compareTime(hour, minute, 23, 0) > 0) { // if after 23:00, set to 23:00
-            hour = 23;
-            minute = 0;
-        }
-        selectedFromHour = hour;
-        selectedToMinute = minute;
-        validateAndSetEndTime(selectedToHour, selectedToMinute); // update end time
-    }
+    private boolean validateFields() {
+        int comp = Utils.compareTime(selectedFromHour, selectedFromMinute, selectedToHour, selectedToMinute);
+        if(comp > 0) {
 
-    private void validateAndSetEndTime(int hour, int minute) {
-        if (Utils.compareTime(hour, minute, selectedFromHour, selectedToMinute) < 0) { // is before start time - set to an hour after start time
-            selectedToHour = selectedFromHour;
-            selectedToMinute = selectedFromMinute + 59;
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setMessage("Starttid må være før sluttid!")
+                    .setTitle("Feil input!")
+                    .setNeutralButton("Ok", null)
+                    .setCancelable(true)
+                    .create();
+            alertDialog.show();
+
+            return false;
+
         }
-        updateTextFields();
+
+        return true;
     }
 
 }

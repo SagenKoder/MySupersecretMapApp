@@ -12,7 +12,7 @@ import app.sagen.roombooking.util.Utils;
 public class CreateRoomTask extends AsyncTask<Room, Void, Room> {
 
     public interface CreateRoomCallback {
-        void buildingCreated(Room room);
+        void roomCreated(Room room);
     }
 
     private static final String API_URI = "http://student.cs.hioa.no/~s326194/createRoom.php?name=%NAME%&desc=%DESC%&buildingId=%BUILDINGID%";
@@ -64,6 +64,6 @@ public class CreateRoomTask extends AsyncTask<Room, Void, Room> {
 
     @Override
     protected void onPostExecute(Room room) {
-        createRoomCallback.buildingCreated(room);
+        createRoomCallback.roomCreated(room);
     }
 }
