@@ -32,8 +32,8 @@ public class CreateBuildingActivity extends AppCompatActivity implements CreateB
         EditText locationFieldLat = findViewById(R.id.location_field_lat);
         EditText locationFieldLng = findViewById(R.id.location_field_lng);
 
-        final float lat = (float) getIntent().getDoubleExtra("app.dagen.mysupersecretmapapp.location.lat", 0);
-        final float lng = (float) getIntent().getDoubleExtra("app.dagen.mysupersecretmapapp.location.lng", 0);
+        final float lat = (float) getIntent().getDoubleExtra("app.dagen.roombooking.location.lat", 0);
+        final float lng = (float) getIntent().getDoubleExtra("app.dagen.roombooking.location.lng", 0);
 
         locationFieldLat.setText(String.format(Locale.US, "%.6f", lat));
         locationFieldLng.setText(String.format(Locale.US, "%.6f", lng));

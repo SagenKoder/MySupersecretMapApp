@@ -136,15 +136,15 @@ public class MainActivity extends FragmentActivity implements
                     selectedLocationMarker = null;
 
                     AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("Vil du opprette ett nytt bygg her?")
-                            .setTitle("Opprette nytt bygg")
-                            .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                            .setMessage(getString(R.string.do_you_want_to_create_building_here))
+                            .setTitle(getString(R.string.do_you_want_to_create_building_here_title))
+                            .setPositiveButton(getString(R.string.ja), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     Intent intent = new Intent(MainActivity.this, CreateBuildingActivity.class);
-                                    intent.putExtra("app.dagen.mysupersecretmapapp.location.lat", markerPosition.latitude);
-                                    intent.putExtra("app.dagen.mysupersecretmapapp.location.lng", markerPosition.longitude);
+                                    intent.putExtra("app.dagen.roombooking.location.lat", markerPosition.latitude);
+                                    intent.putExtra("app.dagen.roombooking.location.lng", markerPosition.longitude);
                                     startActivity(intent);
 
                                 }
@@ -174,9 +174,9 @@ public class MainActivity extends FragmentActivity implements
                 closeMenu();
 
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
-                        .setMessage("Trykk på kartet for å plassere en markør der du vil legge til et bygg")
-                        .setTitle("Sett markøren")
-                        .setNeutralButton("Ok", null)
+                        .setMessage(getString(R.string.tap_map_to_place_marker))
+                        .setTitle(getString(R.string.tap_map_to_place_marker_title))
+                        .setNeutralButton(getString(R.string.ok), null)
                         .setCancelable(true)
                         .create();
                 alertDialog.show();
@@ -252,22 +252,22 @@ public class MainActivity extends FragmentActivity implements
         selectedLocationMarker = googleMap.addMarker(new MarkerOptions()
                 .draggable(true)
                 .position(latLng)
-                .title("Legg til bygg her")
+                .title(getString(R.string.create_building_here_marker))
                 .draggable(true)
-                .snippet("Flytt meg og trykk 'Ferdig'"));
+                .snippet(getString(R.string.create_building_here_marker_snippet)));
 
         selectedLocationMarker.showInfoWindow();
 
-        fab.setText("Ferdig");
+        fab.setText(getString(R.string.ferdig));
         fab.setIcon(getDrawable(R.drawable.ic_create_white_24dp));
 
         GoogleMap.CancelableCallback cancelableCallback = new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
-                        .setMessage("Trykk og hold markøren for å flytte den rundt. Klikk 'Ferdig' når du har den der du vil.")
-                        .setTitle("Flytte markøren")
-                        .setNeutralButton("Ok", null)
+                        .setMessage(getString(R.string.move_marker_message))
+                        .setTitle(getString(R.string.move_marker_message_title))
+                        .setNeutralButton(getString(R.string.ok), null)
                         .setCancelable(true)
                         .create();
                 alertDialog.show();
@@ -276,9 +276,9 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onCancel() {
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
-                        .setMessage("Trykk og hold markøren for å flytte den rundt. Klikk 'Ferdig' når du har den der du vil.")
-                        .setTitle("Flytte markøren")
-                        .setNeutralButton("Ok", null)
+                        .setMessage(getString(R.string.move_marker_message))
+                        .setTitle(getString(R.string.move_marker_message_title))
+                        .setNeutralButton(getString(R.string.ok), null)
                         .setCancelable(true)
                         .create();
                 alertDialog.show();
@@ -489,7 +489,6 @@ public class MainActivity extends FragmentActivity implements
         Log.e(TAG, "fetchLatLngFromAddressFailed: Failed to get geolocation from address");
     }
 
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
@@ -501,7 +500,7 @@ public class MainActivity extends FragmentActivity implements
 
             selectedBuildingMarker = marker;
 
-            fab.setText("Vis detaljer");
+            fab.setText(getString(R.string.show_details));
             fab.setIcon(getDrawable(R.drawable.ic_arrow_drop_up_white_24dp));
 
         }

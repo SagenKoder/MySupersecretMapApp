@@ -10,4 +10,17 @@
     <string name="title_activity_room">RoomActivity</string>
     <string name="title_activity_create_reservation">Opprett ny reservasjon</string>
     <string name="title_activity_create_room_reservation">Opprett ny reservasjon</string>
+    <string name="do_you_want_to_create_building_here">Vil du opprette ett nytt bygg her?</string>
+    <string name="do_you_want_to_create_building_here_title">Opprette nytt bygg</string>
+    <string name="ja">Ja</string>
+    <string name="tap_map_to_place_marker">Trykk på kartet for å plassere en markør der du vil legge til et bygg</string>
+    <string name="tap_map_to_place_marker_title">Sett markøren</string>
+    <string name="ok">Ok</string>
+    <string name="create_building_here_marker">Legg til bygg her</string>
+    <string name="create_building_here_marker_snippet">Flytt meg og trykk \'Ferdig\'</string>
+    <string name="ferdig">Ferdig</string>
+    <string name="move_marker_message">Trykk og hold markøren for å flytte den rundt. Klikk \'Ferdig\' når du har den der du vil.</string>
+    <string name="move_marker_message_title">Flytte markøren</string>
+    <string name="show_details">Vis detaljer</string>
+    <string name="reservations_today">Reservasjoner på rom %1$s idag</string>
 </resources>

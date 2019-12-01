@@ -93,12 +93,6 @@ public class Utils {
         return reservations;
     }
 
-    public static void fixParcelableReferences(List<Building> buildings) {
-        for (Building building : buildings) {
-            fixParcelableReferences(building);
-        }
-    }
-
     public static void fixParcelableReferences(Building building) {
         for (Room room : building.getRooms()) {
             room.setBuilding(building);

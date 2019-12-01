@@ -18,7 +18,7 @@ public class CreateReservationTask extends AsyncTask<Reservation, Void, Reservat
 
     private static final String API_URI = "http://student.cs.hioa.no/~s326194/createReservation.php?roomId=%ROOM%&startTime=%TIME%&duration=%DURATION%";
 
-    private static final String TAG = "CreateRoomTask";
+    private static final String TAG = "CreateReservationTask";
 
     private CreateReservationCallback createReservationCallback;
 

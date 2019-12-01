@@ -28,7 +28,7 @@ public class RoomActivity extends AppCompatActivity {
         }
         Utils.fixParcelableReferences(room);
 
-        setTitle("Reservasjoner på rom " + room.getName() + " idag");
+        setTitle(getString(R.string.reservations_today, room.getName()));
 
         ListView listView = findViewById(R.id.list_view);
 

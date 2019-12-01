@@ -95,11 +95,11 @@ public class BuildingActivity extends AppCompatActivity implements AdapterView.O
             }
         }
 
-        Log.e(TAG, "onActivityResult: requestCode=" + requestCode + " resultCode=" + requestCode + " data=" + data);
+        Log.d(TAG, "onActivityResult: requestCode=" + requestCode + " resultCode=" + requestCode + " data=" + data);
 
         if (requestCode == Utils.CREATE_RESERVATION_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                    finish(); // return after reservation
+                finish(); // return after reservation
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
