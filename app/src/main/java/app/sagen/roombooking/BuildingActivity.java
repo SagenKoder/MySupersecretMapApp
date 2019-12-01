@@ -2,6 +2,7 @@ package app.sagen.roombooking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +77,7 @@ public class BuildingActivity extends AppCompatActivity implements AdapterView.O
         if (item.getItemId() == R.id.building_menu_addroom) {
             Intent intent = new Intent(this, CreateRoomActivity.class);
             intent.putExtra(Building.class.getName(), building);
-            startActivityForResult(intent, 20);
+            startActivityForResult(intent, Utils.CREATE_ROOM_REQUEST_CODE);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -93,12 +94,12 @@ public class BuildingActivity extends AppCompatActivity implements AdapterView.O
                 }
             }
         }
-        if (requestCode == Utils.CREATE_ROOM_RESERVATION_REQUEST_CODE) {
-            if (resultCode == RESULT_OK && data != null) {
-                Reservation reservation = data.getParcelableExtra(Reservation.class.getName());
-                if(reservation != null) {
+
+        Log.e(TAG, "onActivityResult: requestCode=" + requestCode + " resultCode=" + requestCode + " data=" + data);
+
+        if (requestCode == Utils.CREATE_RESERVATION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                     finish(); // return after reservation
-                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -222,7 +222,7 @@ public class CreateReservationActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK && data != null) {
                 Reservation reservation = data.getParcelableExtra(Reservation.class.getName());
                 if(reservation != null) {
-                    setResult(Utils.CREATE_ROOM_RESERVATION_REQUEST_CODE, data);
+                    setResult(RESULT_OK, data);
                     finish(); // return after reservation
                 }
             }
