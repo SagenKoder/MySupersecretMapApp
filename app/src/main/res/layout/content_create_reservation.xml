@@ -21,7 +21,7 @@
         android:id="@+id/create_reservation_show_datepicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Velg dato" />
+        android:text="@string/velg_dato" />
 
     <EditText
         android:id="@+id/create_reservation_selected_time_from"
@@ -35,7 +35,7 @@
         android:id="@+id/create_reservation_show_timefrompicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sett starttid" />
+        android:text="@string/sett_starttid" />
 
     <EditText
         android:id="@+id/create_reservation_selected_time_to"
@@ -49,6 +49,6 @@
         android:id="@+id/create_reservation_show_timetopicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sett sluttid" />
+        android:text="@string/sett_sluttid" />
 
 </LinearLayout>

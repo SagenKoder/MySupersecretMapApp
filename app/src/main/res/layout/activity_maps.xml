@@ -26,7 +26,7 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:padding="@dimen/standard_12"
         android:clipToPadding="false"
         android:gravity="center_vertical"
@@ -37,14 +37,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fra kart"
+            android:text="@string/fra_kart"
             android:textColor="@color/colorPrimary" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             app:srcCompat="@drawable/ic_add_location_white_24dp"
             app:fabSize="mini" />
 
@@ -55,7 +55,7 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:padding="@dimen/standard_12"
         android:clipToPadding="false"
         android:gravity="center_vertical"
@@ -66,14 +66,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fra GPS"
+            android:text="@string/fra_gps"
             android:textColor="@color/colorPrimary" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             app:srcCompat="@drawable/ic_gps_fixed_white_24dp"
             app:fabSize="mini" />
 
@@ -84,7 +84,7 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:padding="@dimen/standard_12"
         android:clipToPadding="false"
         android:gravity="center_vertical"
@@ -95,7 +95,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fra addresse"
+            android:text="@string/fra_addresse"
             android:textColor="@color/colorPrimary" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

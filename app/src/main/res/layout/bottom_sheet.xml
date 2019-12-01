@@ -32,7 +32,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Søk opp ett bygg"
+                android:text="@string/s_k_opp_ett_bygg"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="fra addresse"
+                android:text="@string/fra_addresse_field"
                 android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
@@ -56,7 +56,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Skriv inn addresse"
+            android:text="@string/skriv_inn_addresse"
             android:textColor="@color/colorPrimary"
             android:labelFor="@id/search_for_address_field" />
 
@@ -65,7 +65,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
-            android:hint="Pilestredet 48"
             android:backgroundTint="@color/colorPrimary" />
 
     </LinearLayout>
@@ -76,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@color/colorPrimary"
-        android:text="Søk opp"
+        android:text="@string/s_k_opp"
         android:textColor="#fff" />
 
 </LinearLayout>

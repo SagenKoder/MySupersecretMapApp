@@ -23,4 +23,26 @@
     <string name="move_marker_message_title">Flytte markøren</string>
     <string name="show_details">Vis detaljer</string>
     <string name="reservations_today">Reservasjoner på rom %1$s idag</string>
+    <string name="reserver_rom">Reserver rom</string>
+    <string name="opprett_bygg">Opprett bygg</string>
+    <string name="finn_ledige_rom">Finn ledige rom</string>
+    <string name="opprett_rom">Opprett rom</string>
+    <string name="fra_addresse">Fra addresse</string>
+    <string name="fra_gps">Fra GPS</string>
+    <string name="fra_kart">Fra kart</string>
+    <string name="s_k_opp_ett_bygg">Søk opp ett bygg</string>
+    <string name="fra_addresse_field">fra addresse</string>
+    <string name="skriv_inn_addresse">Skriv inn addresse</string>
+    <string name="s_k_opp">Søk opp</string>
+    <string name="posisjon_latitude">Posisjon (Latitude)</string>
+    <string name="posisjon_longitude">Posisjon (Longitude)</string>
+    <string name="navn_p_bygg">Navn på bygg</string>
+    <string name="velg_dato">Velg dato</string>
+    <string name="sett_starttid">Sett starttid</string>
+    <string name="sett_sluttid">Sett sluttid</string>
+    <string name="forelesningssal_med_200_plasser">Forelesningssal med 200 plasser</string>
+    <string name="beskrivelse">Beskrivelse</string>
+    <string name="pi256">PI256</string>
+    <string name="navn_p_rom">Navn på rom</string>
+    <string name="til">til</string>
 </resources>

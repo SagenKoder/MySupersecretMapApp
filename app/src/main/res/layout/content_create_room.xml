@@ -14,28 +14,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:text="Navn på rom" />
+        android:text="@string/navn_p_rom" />
 
     <EditText
         android:id="@+id/create_room_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:hint="PI256"
+        android:hint="@string/pi256"
         android:backgroundTint="@color/colorPrimary" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:text="Beskrivelse" />
+        android:text="@string/beskrivelse" />
 
     <EditText
         android:id="@+id/create_room_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:hint="Forelesningssal med 200 plasser"
+        android:hint="@string/forelesningssal_med_200_plasser"
         android:backgroundTint="@color/colorPrimary" />
 
 </LinearLayout>

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:text="Navn på bygg" />
+        android:text="@string/navn_p_bygg" />
 
     <EditText
         android:id="@+id/name_field"
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:text="Posisjon (Latitude)" />
+        android:text="@string/posisjon_latitude" />
 
     <EditText
         android:id="@+id/location_field_lat"
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:text="Posisjon (Longitude)" />
+        android:text="@string/posisjon_longitude" />
 
     <EditText
         android:id="@+id/location_field_lng"
